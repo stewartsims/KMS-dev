@@ -1,0 +1,86 @@
+
+/* 
+**
+** Stylesheet for XXX Web Laboratory
+** 
+** Author: Torbjörn Lager  
+**         lager@ling.gu.se
+*/
+
+/* 
+** Help page 
+**
+*/
+
+body {
+   color:black;
+   background-color:white;
+   font-size: 80%;
+   }
+
+h1 {
+   font-family:verdana,arial,sans-serif;
+   background-color:white;
+   color: darkblue;
+   border: solid darkblue 2px;
+   font-weight:normal;
+   padding-bottom:.8em;
+   padding-top:.8em;
+   text-align: center;
+   margin:0em;
+   }
+     
+h2 {
+   font-family:verdana,arial,sans-serif;
+   background-color:white;
+   color: darkblue;
+   font-weight:normal;
+   padding-bottom:.8em;
+   padding-top:.8em;
+   text-align: left;
+   margin:0em;
+   }
+
+h3 {
+   font-family:verdana,arial,sans-serif;
+   background-color: white;
+   color: darkblue;
+   font-weight:normal;
+   padding-bottom:.5em;
+   padding-top:.5em;
+   text-align: left;
+   margin-top:1em;
+   margin-left:0em;
+   margin-right:0em;
+   margin-bottom:0em;
+   }
+    
+.author {
+   font-family:verdana,arial,sans-serif;
+   font-size:16;
+   text-align:center; 
+   margin-top:2em;
+   margin-bottom:2em;
+   }
+
+pre {
+   font-family:courier;
+   margin-left:2em;
+   }
+
+p {
+   font-family:verdana,arial,sans-serif;
+   text-align: justify;
+   margin-right:1em;
+   margin-left:1em;
+   }
+   
+li {
+   font-family:verdana,arial,sans-serif;
+   }
+
+.sub {
+   vertical-align:sub;
+   font-size:80%;
+   }
+

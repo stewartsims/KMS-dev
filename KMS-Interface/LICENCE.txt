@@ -1,0 +1,7 @@
+
+/**
+ * Copyright Stewart Sims 2010
+ * 
+ * This is part of the HEAD of Knowledge Management Services project. Commercial development, all rights reserved
+ * 
+ */

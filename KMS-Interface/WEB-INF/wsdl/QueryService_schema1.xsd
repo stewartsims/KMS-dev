@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://localhost:8080/" xmlns:ns1="http://jaxb.dev.java.net/array" xmlns:tns="http://localhost:8080/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://jaxb.dev.java.net/array" schemaLocation="QueryService_schema2.xsd"/>
+
+  <xs:element name="queryKA" type="tns:queryKA"/>
+
+  <xs:element name="queryKAResponse" type="tns:queryKAResponse"/>
+
+  <xs:element name="testReturn" type="tns:testReturn"/>
+
+  <xs:element name="testReturnResponse" type="tns:testReturnResponse"/>
+
+  <xs:complexType name="testReturn">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="testReturnResponse">
+    <xs:sequence>
+      <xs:element name="return" type="ns1:stringArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="queryKA">
+    <xs:sequence>
+      <xs:element name="kaIdentifier" type="xs:string" minOccurs="0"/>
+      <xs:element name="procedure" type="xs:string" minOccurs="0"/>
+      <xs:element name="parameters" type="ns1:stringArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="queryKAResponse">
+    <xs:sequence>
+      <xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

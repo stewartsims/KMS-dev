@@ -1,0 +1,6 @@
+assert(user(anonymous, [roles([anonymous])])).
+assert(user(admin, [roles([admin])])).
+assert(user(aladdin, [roles([user])])).
+assert(user(test, [roles([user])])).
+retractall(user(aladdin, _)).
+assert(user(aladdin, [roles([user]), mail('me@ling.gu.se')])).

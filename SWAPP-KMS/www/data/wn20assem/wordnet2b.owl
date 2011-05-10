@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY dc   "http://purl.org/dc/elements/1.1/">
+    <!ENTITY owl  "http://www.w3.org/2002/07/owl#">
+    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#">
+    <!ENTITY wn   "http://www.cogsci.princeton.edu/~wn#">
+]>
+<rdf:RDF
+    xmlns     ="&wn;"
+    xml:base  ="http://www.cogsci.princeton.edu/~wn"
+    xmlns:dc  ="&dc;"
+    xmlns:owl ="&owl;"
+    xmlns:rdf ="&rdf;"
+    xmlns:rdfs="&rdfs;"
+    xmlns:wn  ="&wn;"
+>
+
+    <!-- Class descriptions -->
+
+    <rdfs:Description rdf:about="#SynSet">
+        <rdfs:subClassOf rdf:resource="&rdfs;Class" />
+    </rdfs:Description>
+
+    <!-- Properties of SynSet -->
+
+    <rdf:Description rdf:about="#hyp">
+        <rdfs:subPropertyOf rdf:resource="&rdfs;subClassOf" />
+    </rdf:Description>
+
+</rdf:RDF>
+

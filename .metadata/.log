@@ -1,0 +1,18 @@
+!SESSION 2011-03-22 16:04:43.566 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Framework arguments:  -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.jee.product -data F:\KME Project Builds\Forks\Open Source -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.ui.workbench 2 0 2011-03-22 17:43:35.494
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2011-03-22 17:43:35.494
+!MESSAGE Conflict for 'org.eclipse.wst.jsdt.ui.edit.text.java.open.editor':
+HandlerActivation(commandId=org.eclipse.wst.jsdt.ui.edit.text.java.open.editor,
+	handler=ActionHandler(org.eclipse.wst.jsdt.ui.actions.OpenAction@a0d2ec),
+	expression=AndExpression(AndExpression(org.eclipse.ui.SubActionBars$1@1aec0d1,ActivePartExpression(org.eclipse.ui.navigator.resources.ProjectExplorer@425258)),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@87d472)),sourcePriority=1064961)
+HandlerActivation(commandId=org.eclipse.wst.jsdt.ui.edit.text.java.open.editor,
+	handler=ActionHandler(org.eclipse.wst.jsdt.ui.actions.OpenAction@a0d2ec),
+	expression=AndExpression(AndExpression(org.eclipse.ui.SubActionBars$1@1aec0d1,ActivePartExpression(org.eclipse.ui.navigator.resources.ProjectExplorer@425258)),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@87d472)),sourcePriority=1064961)

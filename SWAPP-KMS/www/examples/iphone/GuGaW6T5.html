@@ -1,0 +1,648 @@
+<html manifest="cache-manifest.manifest">
+<!-- <html> -->
+<head>
+    <title>Pie Guy</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width; height=device-height; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />    
+    <link rel="apple-touch-icon-precomposed" href="images/haiku.png">
+    <link rel="apple-touch-startup-image" href="images/haiku.png">
+    
+    <style type="text/css">
+    
+    body {
+    	margin: 0;
+    	padding: 0;
+    	background: black;
+    	font: bold 16px/20px "ArialRoundedMTBold";
+    }
+        
+    * {
+    	position: absolute;
+    	-webkit-tap-higlight-color: transparent;
+       	-webkit-user-select: none;    	
+    }	
+    
+    a {
+    	color: orange;
+    }
+    
+    a img {
+    	border: none;
+    }
+	    
+    #stage {
+    	width: 480px;
+    	height: 272px;
+    	max-width: 480px;
+    	max-height: 272px;
+    	background-repeat: no-repeat;
+		
+		-webkit-transform: scale(1); /*  this will make the div in question layer-backed - we need this for speed! */
+    }
+    #stage.earthquake {
+		-webkit-animation-name: earthquake;    
+    	-webkit-animation-duration: .5s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-direction: alternate;
+		-webkit-animation-timing-function: linear;		
+    }
+    #stage.shrink {
+		-webkit-animation-name: shrink;
+		-webkit-animation-duration: 5s; 
+		-webkit-animation-timing-function: linear;    
+    }
+   
+
+    #stage.map0 {
+    	background-image: url(images/map0.png);
+    }
+    #stage.map1 {
+    	background-image: url(images/map1.png);
+		-webkit-animation-name: beat;
+    }
+
+	@-webkit-keyframes beat
+	{		
+		0% {
+			-webkit-transform: scale(1.01, .99) rotate(-.3deg);
+		}
+		100% {
+			-webkit-transform: scale(.99, 1.01) rotate(.3deg);
+		}
+	}
+    
+    
+	@-webkit-keyframes earthquake
+	{		
+		0% {
+			-webkit-transform: rotate(-2deg) scale(1);
+		}
+		10% {
+			-webkit-transform: rotate(2deg) scale(1.02);
+		}
+		20% {
+			-webkit-transform: rotate(-1deg) scale(1.05);
+		}
+		40% {
+			-webkit-transform: rotate(1deg) scale(1.01);
+		}
+		60% {
+			-webkit-transform: rotate(-2deg) scale(1.03);
+		}
+		80% {
+			-webkit-transform: rotate(2deg) scale(1);
+		}
+
+		100% {
+			-webkit-transform: rotate(1deg) scale(1.06);
+		}
+	}
+
+	@-webkit-keyframes shrink	
+	{		
+		0% {
+			-webkit-transform: scale(1);
+
+		}
+		13% {
+			-webkit-transform: scale(.2) rotate(-1deg);
+			-webkit-animation-timing-function: ease-out;
+		}
+		15% {
+			-webkit-transform: scale(.26) rotate(1deg);
+			-webkit-animation-timing-function: ease-in-out;			
+		}
+		17% {
+			-webkit-transform: scale(.25);
+			-webkit-animation-timing-function: ease-in;			
+		}
+		95% {
+			-webkit-transform: scale(.25);
+		}
+		98% {
+			-webkit-transform: scale(1.2) rotate(-1deg);
+		}
+		100% {
+			-webkit-transform: scale(1);
+		}
+	}	
+    
+    #guy {
+    	top: -2px;
+    	left: -1px;
+    	width: 18px;
+    	height: 20px;
+    	
+    	-webkit-transition-property: -webkit-transform;
+    	-webkit-transition-timing-function: linear;
+    }
+
+    #chef, #chef2 {
+    	top: -2px;
+    	left: -1px;
+    	width: 18px;
+    	height: 20px;
+    	
+    	-webkit-transition-property: -webkit-transform;
+    	-webkit-transition-timing-function: linear;
+    }
+
+   	@-webkit-keyframes blink
+	{		
+		0% {
+			opacity: 1;
+		}
+		49% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+	.blink {
+		-webkit-animation-name: blink;
+		-webkit-animation-duration: .5s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-timing-function: linear;    
+	}
+    #scoreBar {
+		top: 270px;
+		left: 78px;
+		width: 420px;
+		height: 22px;
+		padding-top: 3px;
+		z-index: 100;
+		background: url(images/scoreBar.gif) no-repeat 4px 6px;
+    }
+    #hiScoreMonitor {	
+    	left: 64px;
+    	top: 6px;    	
+    }
+    #scoreMonitor {
+    	left: 180px;
+    	top: 6px;
+    }
+    #levelMonitor {
+    	left: 292px;
+    	top: 6px;
+    }
+    #livesMonitor {
+    	left: 334px;
+    	width: 66px;
+    	background: url(images/life.gif) 0 2px repeat-x;
+		-webkit-transform: scale(1); /*  this will make the div in question layer-backed - we need this for speed! */
+    }
+    
+    #menuButton {
+		top: 270px;
+		left: 0px;
+/* 		left: 408px; */
+	    width: 66px;
+	    height: 28px;
+	    background: url(images/menuButton.gif) no-repeat 6px 6px;
+	    z-index: 200;
+    }
+    
+    .monitor {
+    	height: 20px;
+		overflow: hidden;
+    }
+    .label {
+    	color: #ed5f12;
+    }
+
+	.labelDigit {
+		position: relative;
+		width: 10px;
+		max-width: 10px;
+		height: 14px;
+		max-height: 14px;
+		overflow: hidden;
+		float: left;
+		clear: none;
+		background: url(images/font1.gif) no-repeat;
+		background-position-x: 0;
+	}
+/* 	!Tiles */
+    .tile {
+    	max-width: 16px;
+    	max-height: 16px;
+    	min-width: 16px;
+    	min-height: 16px;
+    	overflow: hidden;
+    	font: 9px Helvetica;
+/*     	outline: 1px solid black; */
+    	color:rgba(255,255,255,.6);
+    }
+    .tile.o {
+    	background: url(images/token1.gif) 4px 4px no-repeat;    	
+    }
+    .tile.u {
+    	background: url(images/token4.gif) 4px 4px no-repeat;    	
+    }
+    .tile.e { /* earthquake token */
+    	background: url(images/token2.gif) no-repeat;
+    }
+    .tile.s { /* shrink token */
+    	background: url(images/token3.gif) no-repeat;
+    }
+    .tile.i {
+    	background: green;
+    }
+    
+    #tiles {
+    	-webkit-animation-name: tokens;
+		-webkit-animation-duration: .5s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-direction: alternate;
+		-webkit-animation-timing-function: linear;    
+    }
+    
+	@-webkit-keyframes tokens
+	{		
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: .5;
+		}
+	}
+
+	#welcome {
+		width: 480px;
+		height: 300px;
+		background: url(images/splash.png) no-repeat;
+		-webkit-transform: scale(1); /*  this will make the div in question layer-backed - we need this for speed! */
+	}
+
+	#game {
+		width: 480px;
+		height: 300px;
+		display: none;
+	}
+	
+/* 	!Menu */
+	#menu {
+		width: 480px;
+		height: 240px;
+		padding-top: 60px;
+		background: rgba(0,0,0,.8);
+		z-index: 900;
+		text-align: center;
+		display: none;
+				
+    	-webkit-transition: opacity .3s ease;
+	}
+	#noticeRotate {
+		width: 480px;
+		height: 460px;
+		display: none;
+		opacity: 0;
+		background: black url(images/menu-rotate.gif) center center no-repeat;
+		z-index: 5000;
+
+		-webkit-transition: opacity .3s ease;				
+		-webkit-transform: scale(1); /*  this will make the div in question layer-backed - we need this for speed! */
+	}	
+	#menu * {
+		position: relative;
+	}
+	.button {
+		width: 156px;
+		height: 44px;
+		margin: 0 auto 20px auto;
+		background-repeat: no-repeat;
+		background-position: 0 0;
+		opacity: 1;
+		-webkit-transition: opacity .2s ease;
+	}
+	.button:active {
+		background-position: 0 0;
+	}
+	.btnContinue {
+		background-image: url(images/menu-continue.gif);
+	}
+	.btnContinue:active {
+		background-image: url(images/menu-continue-active.gif);
+	}
+	.btnNew {
+		background-image: url(images/menu-new.gif);
+	}
+	.btnNew:active {
+		background-image: url(images/menu-new-active.gif);
+	}
+	.btnAbout {
+		background-image: url(images/menu-about.gif);
+	}
+	.btnAbout:active {
+		background-image: url(images/menu-about-active.gif);
+	}
+	
+	/* !About */
+	#about {
+		width: 480px;
+		height: 120px;
+		padding-top: 180px;
+		background: rgba(0,0,0,.8);
+		z-index: 2500;
+		text-align: center;
+		display: none;
+		background-image: url(images/about-text.gif);
+		background-repeat: no-repeat;
+		background-position: center 60px;
+				
+    	-webkit-transition: opacity .3s ease;
+	}
+	
+	#about * {
+		position: relative;
+	}
+	
+	#btnNeven {
+		display: block;
+		position: absolute;
+		width: 124px;
+		height: 26px;
+		top: 136px;
+		left: 236px;
+	}
+	#btnNeven:active {
+		background: rgba(204, 51, 0, .3);
+	}
+
+	#btnMenu {
+		background-image: url(images/menu-back.gif);
+	}
+	#btnMenu:active {
+		background-image: url(images/menu-back-active.gif);
+	}	
+	
+	#welcome .btnContinue {
+		top: 222px;
+		left: 76px;
+	}
+	#welcome .btnNew {
+		top: 222px;
+		left: 250px;	
+	}
+	#welcome #btnWelcomeAbout {
+		top: 42px;
+		left: 384px;
+		width: 50px;
+		height: 42px;
+		background-image: url(images/menu-about-small.png);
+	}
+	#welcome #btnWelcomeAbout:active {
+		background-image: url(images/menu-about-small-active.png);
+	}
+	
+	#welcome.new .btnContinue {
+		display: none;
+	}
+
+	#welcome.new .btnNew {
+		top: 222px;
+		left: 160px;	
+	}
+
+	/* 	!Portrait menu */
+	.portrait #menu {
+		background: black;
+	}
+	.portrait.launch #menu {
+		width: 300px !important;
+		height: 480px !important;
+	}
+	.portrait #btnContinue, .portrait #btnNew, .portrait #btnAbout {
+		opacity: 0;
+	}
+	
+	#desktop {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		background: red;
+		display: none;
+		color: white;
+		text-align: left;
+	}
+	#desktop * {
+		position: relative;
+	}
+	#desktopGuy {
+		position: absolute;
+		bottom: 50px;
+		-webkit-animation-name: pace;
+		-webkit-animation-duration: 8s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-timing-function: linear;
+	}
+	@-webkit-keyframes pace
+	{		
+		0% {
+			left: 0;
+		}
+		100% {
+			left: 100%;
+		}
+	}	
+	
+	#notice {
+		display: none;
+		opacity: 0;
+		width: 480px;
+		height: 200px;
+		padding-top: 100px;
+		z-index: 2000;
+		background-color: transparent;
+		background-position: center 50px;
+		background-repeat: no-repeat;
+				
+     	-webkit-transition: opacity .5s ease;
+	}
+	#notice.win {
+		background-color: black;
+		background-image: url(images/pie-complete.gif);
+	}
+	
+	#notice.win #noticeScoreTokens {
+		display: block;
+	}
+	#notice.win #noticeScoreTime {
+		display: block;
+	}
+	#notice.win #noticeScoreLine {
+		display: block;
+	}
+	
+	#notice.gameover {
+		background-color: black;
+		background-image: url(images/game-over.gif);
+		padding-top: 130px;
+		background-position: center 80px;
+	}
+	#notice.gameover #noticeScoreTokens {	
+		display: none;
+	}
+	#notice.gameover #noticeScoreTime {
+		display: none;
+	}
+	#notice.gameover #noticeScoreLine {
+		display: none;
+	}	
+	
+	#notice.bonusscore {
+		background-color: black;
+		background-image: url(images/bonus-score.gif);
+		padding-top: 140px;
+		background-position: center 90px;
+		height: 160px;
+	}
+	#notice.bonusscore #noticeScoreTokens {	
+		display: none;
+	}
+	#notice.bonusscore #noticeScoreTime {
+		display: none;
+	}
+	#notice.bonusscore #noticeScoreLine {
+		display: none;
+	}
+
+	#notice.bonusround {
+		background-color: black;
+		background-image: url(images/bonus-score.gif);
+		padding-top: 140px;
+		background-position: center 90px;
+		height: 160px;
+	}
+	#notice.bonusround #noticeScoreTokens {	
+		display: none;
+	}
+	#notice.bonusround #noticeScoreTime {
+		display: none;
+	}
+	#notice.bonusround #noticeScoreLine {
+		display: none;
+	}
+	#notice.bonusround #noticeScoreLevel {
+		display: none;
+	}
+	#notice.bonusround #noticeScoreTotal {
+		display: none;
+	}
+
+			
+	#notice div.monitor {
+		position: relative;
+		clear: both;
+		width: 104px;
+		height: 24px;		
+		margin-bottom: 14px;
+		left: 186px;
+	}
+	#notice div.monitor div.labelDigit {
+		position: relative;
+		top: 6px;
+		left: 46px;
+		margin-bottom: 14px;
+	}
+	#notice img {
+		float: left;
+		clear: none;
+	}
+	
+	#noticeScoreLine
+	{		
+		position: relative;
+		clear: both;	
+		height: 2px;
+		background: #444;
+		width: 110px;
+		margin: 6px auto 12px auto;		
+	}
+	
+	#install {		
+		position: fixed;
+		width: 80%;
+		height: 60%;
+		padding: 40% 10% 0 10%;		
+/* 		background: url(images/install1.gif) center center no-repeat; */
+		color: white;
+		font: 18px/22px Helvetica;
+		text-align: center;
+		display: none;
+		z-index: 12000;
+	}
+	
+	.subtle {
+		opacity: .5;
+	}
+    </style>
+
+    <script src="main.js" type="text/javascript"></script>
+    
+</head>
+<body onload="preInit()">
+
+	<div id="desktop">
+		<div style="width: 420px; padding: 50px">
+			Pie Guy is an iPhone game. Please visit this website on an iPhone (or iPod touch!) to install and play it and beat it and then beat your high score.
+			<br /><br />
+			<a href="http://mrgan.tumblr.com/post/257187093/pie-guy">Read more about it here!</a>
+		</div>		
+	</div>
+
+	<div id="install">To install Pie Guy, tap the <span style="color: lime; position: relative">+</span> button and choose <span style="color: orange;position: relative">Add to Home Screen</span>. Launch it from there. Bon appétit!</div>
+
+	<div id="game">
+		<div id="scoreBar">
+			<div id="hiScoreMonitor" class="subtle monitor"></div>
+			<div id="scoreMonitor" class="monitor"></div>
+			<div id="levelMonitor" class="subtle monitor"></div>
+			<div id="livesMonitor" class="monitor"></div>
+		</div>
+	
+		<div id="stage">
+			<div id="tiles"></div>
+		</div>	
+
+		<div id="menuButton" ontouchend="showMenu();"></div>
+	</div>
+
+	<div id="menu">
+		<div class="button btnContinue" id="btnContinue" ontouchend="gameContinue()"></div>
+		<div class="button btnNew" id="btnNew"  ontouchend="gameNew(1)"></div>
+		<div class="button btnAbout" id="btnAbout" ontouchend="showAbout()"></div>			
+	</div>
+
+	<div id="about">
+
+		<div class="button" id="btnMenu" ontouchend="menuBack()"></div>
+	</div>
+
+	<div id="welcome">
+		<div class="button btnContinue" id="btnWelcomeContinue"  ontouchend="gameContinueSaved()"></div>
+		<div class="button btnNew" id="btnWelcomeNew" ontouchend="gameNew(1)" onclick="gameNew(1)"></div>	
+		<div class="button" id="btnWelcomeAbout" ontouchend="showAbout()"></div>	
+	</div>
+	
+	<div id="notice" class="win">
+		<div id="noticeScoreTokens" class="monitor"><img src="images/notice-tokens.gif"width="36" height="24"/></div>
+		<div id="noticeScoreTime" class="monitor"><img src="images/notice-time.gif" width="36" height="24"/></div>
+		<div id="noticeScoreLine"></div>		
+		<div id="noticeScoreLevel" class="monitor"><img src="images/notice-level.gif" width="36" height="24"/></div>
+		<div id="noticeScoreTotal" class="monitor"><img src="images/notice-total.gif" width="36" height="24"/></div>		
+	</div>
+	
+	<div id="noticeRotate"></div>
+	
+	<div id="logg" style="top: 5px; left: 220px; color: orange; font-family: helvetica; text-shadow: black 0 1px 1px"></div>
+		
+
+</body>
+</html>

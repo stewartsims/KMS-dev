@@ -1,0 +1,125 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  
+    <title>JavaScript Visual Wordnet</title>
+
+    <script src="assets/event.js"></script>
+    <script src="assets/timer.js"></script>
+    <script src="assets/graph.js"></script>
+    <script src="assets/domui.js"></script>
+    <script src="assets/control.js"></script>
+    <script src="assets/ajax.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="assets/style.css" />
+
+  </head><body onload="timer.start()">
+
+	<div id="img_preload" style="position: absolute;">
+	  <img src="assets/bubble_004.gif">
+	  <img src="assets/bubble_002.gif">
+	  <img src="assets/bubble_003.gif">
+	  <img src="assets/bubble.gif">
+	</div>
+
+	<!--  page header and controls -->
+	
+	<div class="page_head" style="position: absolute;">
+	  <form style="margin: 0pt; padding: 0pt;">
+	  <table width="100%" cellpadding="0" cellspacing="0">
+	    <tbody><tr>
+	      <td class="page_title" align="left">
+	        &nbsp;
+	          <a class="page_head_link" !href="http://www.kylescholz.com/blog/">JavaScript Visual Wordnet</a>
+	      </td>
+	      <td>
+	        <span class="ctrl_title">Lookup:</span>
+	        <input value="quash" id="text" size="16" name="text" style="border: 1px solid rgb(68, 68, 68); background-color: rgb(240, 240, 240); padding-left: 2px;" type="text">
+	        <input class="submit" value="GO" style="margin-right: 4px;" type="submit"><button id="button_pause" onclick="toggle_pause();return false;">PAUSE</button>
+	      </td>
+	      <td>
+	        <span class="branding_sub">R1 Alpha (
+	          <a class="head_link" href="http://www.kylescholz.com/blog/2006/06/first_whack_at_javascript_visu.html">Notes</a> | 
+	          <a class="head_link" href="http://www.kylescholz.com/blog/2006/06/first_whack_at_javascript_visu.html">Credits</a> )
+	        </span>
+	      </td>
+	    </tr>
+	  </tbody></table>
+	  </form>
+	</div>
+	
+	<!--  /page header and controls -->
+
+	<!-- frame -->
+	<div id="frame" style="z-index: -1; position: absolute; top: 30px; left: 10px; width: 1856px; height: 977px;"></div>
+	
+	<!-- origin node -->
+	<div style="left: 938px; top: 518px;" id="origin">quash</div>
+	
+	<!-- gloss -->
+	<div id="gloss"></div>
+	
+	<script language="Javascript">
+
+    var FRAME_WIDTH;
+    var FRAME_HEIGHT;
+
+    if (IE) {
+      FRAME_WIDTH = document.body.offsetWidth;
+      FRAME_HEIGHT = document.body.offsetHeight;
+    } else {
+      FRAME_WIDTH = window.innerWidth;
+      FRAME_HEIGHT = window.innerHeight;
+    }
+
+    FRAME_WIDTH -= (parseInt(document.getElementById('frame').style.left)*2);
+    FRAME_HEIGHT -= (parseInt(document.getElementById('frame').style.top)+20);
+
+    var paused = false;
+
+    function toggle_pause() {
+      if ( paused ) {
+        paused = false;
+        document.getElementById('button_pause').innerHTML = "PAUSE";
+        timer.start();
+      } else {
+        paused = true;
+        document.getElementById('button_pause').innerHTML = "UNPAUSE";
+        timer.stop();
+      }
+    }
+
+    // create a timer control
+    var timer = new TimerControl();
+    timer.initialize( 1 );
+
+    var graphui=new GraphUI();
+    graphui.initialize( document.getElementById('frame'), document.getElementById('origin') );
+
+    // instantiate the graph
+    var graph=new Graph();
+    graph.initialize( FRAME_WIDTH, FRAME_HEIGHT );
+
+    // set a UI for the graph to report to
+    graph.setUI( graphui );
+
+    // subscribe the graph to the control timer
+    timer.subscribe( graph );
+
+    var control = new UserControl();
+    control.initialize( timer, graph, graphui );
+
+    var word;
+    if ( document.location.href.indexOf('text=') != -1 ) {
+      word = document.location.href.substring( document.location.href.indexOf('=')+1 );
+    } else if ( document.location.href.indexOf('?') != -1 ) {
+      word = document.location.href.substring( document.location.href.indexOf('?')+1 );
+    } else {
+      word="void";
+    }
+    document.getElementById('text').value = word;
+    
+    get("/swapp/rdf/db?query=word('" + encodeURIComponent(word) + "',Json)",handleQuery,null);
+    graphui.setOriginText( word );          
+
+    </script>
+</body></html>

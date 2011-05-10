@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>
+            SWAPP
+        </title>
+        <link rel="stylesheet" type="text/css" media="screen,projection" href="assets/swapp.css" />
+        <style type="text/css">
+/*<![CDATA[*/
+        li.big {
+        margin-left: 30px;
+        list-style: square; 
+        font-family:"Lucida Grande",LucidaGrande,Verdana,Sans-serif;
+        font-weight:normal;
+        font-size:160%;
+        line-height:1.5em;
+        letter-spacing:-1px;
+        color:#899;
+        }
+        /*]]>*/
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            <div id="page2">
+                <div id="header">
+                    <div id="logo"><img src="assets/logo.png" alt="SWAPP" /></div>
+                    <form id="login" action="/">
+                        <div>
+                            <input class="text" size="10" id="username" type="text" /><br />
+                            <input class="text" size="10" id="password" type="password" /><br />
+                            <input src="assets/login.gif" alt="Login" class="btn" type="image" />
+                        </div>
+                    </form>
+                </div>
+                <ul id="nav">
+                    <li>
+                        <strong>Home</strong>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="documentation.html">Documentation</a>
+                    </li>
+                    <li>
+                        <a href="demo.html">Demo</a>
+                    </li>
+                    <li>
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li>
+                        <a href="development.html">Development</a>
+                    </li>
+                    <li>
+                        <a href="support.html">Support</a>
+                    </li>
+                </ul>
+                <h1>
+                    <img src="assets/banner.jpg" alt="Banner" height="110" width="950" />
+                </h1>
+                <div id="content">
+                    <div id="content-group">
+                        <div id="content-main">
+                            <h2>
+                                Welcome to the Logic Programmable Web!
+                            </h2>
+                            <p id="intro">
+                                <br />
+                            </p>
+                            <p style="margin:5px 0 10px 0;font-weight:bold;font-size:14px;">
+                                Targeting <a href="http://en.wikipedia.org/wiki/Ajax_(programming)">Ajax</a> and <a href="http://en.wikipedia.org/wiki/Comet_(programming)">Comet</a> developers wishing to build intelligent knowledge-based applications as well as <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a> program&shy;mers and <a href="http://www.w3.org/2001/sw/">Semantic Web</a> developers wanting to equip applications with highly interactive web-based user interfaces, SWAPP attempts to provide a <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">RESTful</a> API to (in principle) all aspects of the <a href="http://www.swi-prolog.org/">SWI-Prolog programming system</a>, including its mature and efficient <a href="http://www.swi-prolog.org/pldoc/package/semweb.html">Semantic Web libraries</a>.
+                            </p>
+                            <h2>
+                                SWAPP features
+                            </h2>
+                            <p id="intro">
+                                <br />
+                            </p>
+                            <ul>
+                                <li class="big">Fast in-memory RDF triple store, scalable to approx. 25 million<br />
+                                    triples on 32-bit and virtually unlimited on 64-bit hardware
+                                </li>
+                                <li class="big">Persistent storage using journal files
+                                </li>
+                                <li class="big">A RESTful web API for querying and managing data
+                                </li>
+                                <li class="big">Querying of RDF graphs through Prolog queries
+                                </li>
+                                <li class="big">Efficient a-tuple-at-a-time generation of query results
+                                </li>
+                                <li class="big">Query results as Prolog variable bindings encoded in JSON
+                                </li>
+                                <li class="big">Rule-based inferencing well-integrated with application code
+                                </li>
+                                <li class="big">Rule-based ad-hoc inferencing in the context of querying
+                                </li>
+                                <li class="big">Simulated server-push of events for purposes such as monitoring
+                                </li>
+                                <li class="big">Convenient API Explorers aiding in development and testing
+                                </li>
+                                <li class="big">Compatible with any JavaScript library such as YUI, jQuery or Dojo
+                                </li>
+                            </ul>
+                            <p>For more information, see the <a href="about.html">about</a> page and then the <a href="documentation.html">documentation</a> page.  Or skip ahead to the <a href="demo.html">demos</a>.</p>
+                        </div>
+                    </div>
+                    <div id="content-sub">
+                        <div class="subnav">
+                            <h3>
+                                Administration
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">Users</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">Statistics</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="subnav">
+                            <h3>
+                                API Explorers
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/login/index.html">/swapp/login</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/admin/index.html">/swapp/admin/*</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">/swapp/rdf/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">/swapp/session/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">/swapp/session/eq</a>
+                                </li>
+                                </ul>
+                        </div>
+<a style="position:absolute;top:775px;margin-left:20px;" href="http://www.w3.org/RDF/" title="RDF Resource Description
+Framework"> <img border="0" src="assets/rdf_w3c_icon.128.gif"
+alt="RDF Resource Description Framework Icon"/></a>
+                    </div>
+                </div>
+                <div id="footer">
+                    <hr />
+                    <p>
+                        © Copyright 2009 Torbjörn Lager and Jan Wielemaker
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

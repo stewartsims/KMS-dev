@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>N-Queens Demo</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager and Jan Wielmaker">
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/fonts/fonts-min.css" />
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/event/event-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+
+    <style type="text/css" media="screen">
+        body {
+            font-family: trebuchet sans-serif;
+        	font-size: 16px;
+        	margin: 0px;
+            padding:30px;
+            background: #87A0A9;
+        	color: #300;
+        }
+        p {
+			font-size:90%;
+			margin:20px;
+        }
+        #page {
+			width:754px;
+			margin:0 auto;
+        }
+        #page2 {
+			width:730px;
+			padding:12px;
+			float:left;
+			background-color:white;
+        }
+        #header {
+			width:730px;
+			float:left;
+			color:white;
+			background-color:#4F140A;
+        }
+        #col1 {
+			width:400px;
+			margin: 0 0 0 0;
+			float:left;
+        }
+        #col2 {
+			width:320px;
+			margin: 0 0 0 0;
+			float:right;
+			height:100%;
+        }
+        #footer {
+			width:730px;
+			padding:10px 0 10px 0;
+			float:left;
+			text-align: center;
+			background-color:#4F140A;
+			color:white;
+			font-size:small;
+        }
+        h1 {
+			font-family:verdana, sans-serif;
+			text-align:center;
+        }
+        .button {
+        	font-size: 12px;
+        }
+        #board {
+        	width: 400px;
+        	height: 400px;
+        	border: 10px groove #630;
+        }
+        .row {
+        	width: 100%;
+        }
+        .square {
+        	float: left;
+        }
+
+        .odd {
+        	background-color: #E4E4E4;
+        }
+        .even {
+        	background-color: #8A4117;
+        }
+        #description {
+        	width: 280px;
+        	height: 400px;
+        	margin-left: 0px;
+        	padding: 0 10px 0 10px;
+        	border: 10px groove #630;
+        	background-color: #E4E4E4;
+        }
+        #buttons {
+            text-align: center;
+        }
+
+        #msg {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .error {
+            color:#f00;
+        }
+        .square-img {
+            width:100%;
+            height:100%;
+        }
+        #options {
+            position: absolute;
+            top: 300px;
+            display: none;
+            background: #fff;
+            border: 5px groove #630;
+        	background-color: #E4E4E4;
+        	padding: 10px;
+        }
+        #options th {
+            text-align: right;
+        }
+        #options .buttons {
+            text-align: center;
+        }
+        #options td {
+            padding: 10px 5px 10px 5px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var boardsize = 8;
+        var boardwidth = 400;
+        var algorithm = "prolog_queens";
+        var i = 0;
+        function showOptions(show) {
+            document.getElementById("options").style.display = show ? "block" : "none";
+        }
+        function applyOptions() {
+            var size = parseInt(document.getElementById("size").value);
+            if ( document.getElementById("queens").checked == true ) {
+                algorithm = "prolog_queens";
+            } else {
+                algorithm = "clpfd_queens";
+            }
+            if ( size < 2 || size > 40 ) {
+                alert("Size must be in the range 2..40");
+            } else {
+                boardsize = size;
+                showOptions(false);
+                document.getElementById("N").innerHTML = size;
+                document.getElementById("who").innerHTML = (algorithm == "prolog_queens" ? "Prolog" : "clp(FD)");
+                document.getElementById("board").innerHTML = board(boardsize, boardwidth);
+            }
+        }
+        function uri(algorithm, boardsize, i) {
+            return "/swapp/session/db?query=" + algorithm + "(" + boardsize + ", Queens)&cursor=" + i + "&limit=1";
+        }
+        function row(n, size, fieldsize) {
+            var y = fieldsize * (n-1);
+            var row = "<div class='row' style='top:"+y+"px; left:0px;'>\n";
+            for ( var i=1; i<=size; i++ ) {
+                var id = i + "-" + n;
+                var oe = (i+n)%2 == 0 ? "even" : "odd";
+                row += "<div id='" + id + "' class='square " + oe +
+    	           "' style='width:"+fieldsize+"px; height:"+fieldsize+"px'></div>\n";
+            }
+            row += "</div>\n";
+            return row;
+        }
+        function board(size, width) {
+            var board = "";
+            var fieldsize = Math.floor(width/size);
+            for(var i=1; i<=size; i++) {
+                board += row(i, size, fieldsize);
+            }
+            return board;
+        }
+        function clearBoard() {
+            for (var i = 1; i <= boardsize; i++) {
+                for (var j = 1; j <= boardsize; j++) {
+                    document.getElementById(i + "-" + j).innerHTML = "";
+                }
+            }
+        }
+        function setQueens(squareList) {
+            for (var i = 1; i <= boardsize; i++) {
+                var id = i + "-" + squareList[i-1];
+                document.getElementById(id).innerHTML = "<img src='chess-queen.png' class='square-img'/>";
+            }
+        }
+        function working() {
+            document.getElementById("msg").innerHTML = "working ...";
+        }
+        function update(o) {
+            var response = YAHOO.lang.JSON.parse(o.responseText);
+            if (response.success) {
+                clearBoard();
+                setQueens(response.bindings[0].Queens);
+                var html = "Solution #" + (i+1) +"<br>CPU: " + response.time.toPrecision(2) + " sec.";
+     	        document.getElementById("msg").innerHTML = html;
+    	    } else if (response.error) {
+    	        document.getElementById("msg").innerHTML = "<span class='error'>"+response.message+"</span>";
+            } else {
+                document.getElementById("msg").innerHTML = "There are no more solutions.";
+            }
+        }
+        function first() {
+            working();
+            i = 0;
+            YAHOO.util.Connect.asyncRequest('GET', uri(algorithm, boardsize, i), {
+                success: update
+            });
+        }
+        function next() {
+        	working();
+        	i = i + 1;
+            YAHOO.util.Connect.asyncRequest('GET', uri(algorithm, boardsize, i), {
+                success: update
+            });
+        }
+        function previous() {
+        	working();
+        	i = i - 1;
+            YAHOO.util.Connect.asyncRequest('GET', uri(algorithm, boardsize, i), {
+                success: update
+            });
+        }
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page">
+        <div id="page2">
+            <div id="header">
+                <h1>N-Queens Demo</h1> 
+            </div>
+            <div id="col1">
+                <div id="board"></div>
+            </div>
+            <div id="col2">
+                <div id="description" >
+                    <p style="font-size: 24px; font-weight: bold; text-align: center">
+                        <span id='N'>8</span> Queens Puzzle
+                    </p>
+                    <p>
+                        In chess, the queen can move any number of squares in any one
+                        direction, vertically, horizontally, or diagonally.  The <i>N</i>-Queens
+                        Puzzle requires that <i>N</i> queens are placed on a <i>NxN</i> chess
+                        board so that no queen can capture any other queen.
+                    </p>
+                    <p>
+                        Let <span id='who'>Prolog</span> find solutions for you:
+                    </p>
+                    <div id="buttons">
+                        <input class="button" type="button" id='first'    name="first"    value="First" onClick="first()">
+                        <input class="button" type="button" id='next'     name="next"     value="Next"  onClick="next()">
+                        <input class="button" type="button" id='previous' name="previous" value="Previous"  onClick="previous()">
+                        <input class="button" type="button" id='opts'	   name="options"  value="Options ..." onClick="showOptions(true)">
+                    </div>
+                    <div id="msg"></div>
+                </div>
+                <div id='options'>
+                    <table>
+                        <tr>
+                            <th>Algorithm:</th>
+                            <td>
+                                <input type='radio' checked id='queens' name='algorithm'/>Prolog
+                                <input type='radio' id='clpfd_queens' name='algorithm'/>clp(FD)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Size of the board:</th>
+                            <td>
+                                <select id='size'>
+                                    <option value="4">4</option>
+                                    <option value="8" selected>8</option>
+                                    <option value="16">16</option>
+                                    <option value="40">40</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="buttons">
+                                <input type="button" id='ok' name="ok" value="Ok" onClick="applyOptions()">
+                                <input type="button" id='cancel' name="cancel" value="Cancel" onClick="showOptions(false)">
+                            <td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <script type="text/javascript">
+                document.getElementById("board").innerHTML = board(boardsize, boardwidth);
+            </script>
+            <div id="footer">
+                Last updated on 26/9, 2009
+            </div>
+        </div>
+    </div>
+</body>
+</html>

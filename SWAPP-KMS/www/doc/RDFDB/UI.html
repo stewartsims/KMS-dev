@@ -1,0 +1,289 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>
+   SWAPP SessionDB API Explorer
+  </title>
+  <script type="text/javascript" language="JavaScript"> 
+    if (top.frames.length==0) {top.location="index.html";}   
+  </script>
+
+  <link type="text/css" rel="stylesheet" href="../css/user_interface.css">
+  <link type="text/css" rel="stylesheet" href="../css/blueish.css" title="Blueish">
+
+  <script type="text/javascript" src="../js/yui/yahoo-min.js"></script> 
+  <script type="text/javascript" src="../js/yui/event-min.js"></script>
+  <script type="text/javascript" src="../js/yui/connection_core-min.js"></script>
+  <script type="text/javascript" src="../js/yui/json-min.js"></script> 
+  <script type="text/javascript" src="../js/jsonbrowser.js"></script> 
+  <script type="text/javascript" src="../js/utils.js"></script> 
+
+  <script type="text/javascript"> 
+    function myget() {
+        var i = parseInt(document.getElementById('i').value);
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value;
+        solve(i, m, output);
+    }    
+    function myfirst() {
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value
+        solve(0, m, output);
+        document.getElementById('i').value = 0;
+    }
+    function mynext() {
+        var i = parseInt(document.getElementById('i').value);
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value;
+        var j = i + 1;
+        solve(j, m, output);
+        document.getElementById('i').value = j;
+    }
+    function myprevious() {
+        var i = parseInt(document.getElementById('i').value);
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value;
+        var j = i - 1;
+        solve(j, m, output);
+        document.getElementById('i').value = j;
+    }
+    function update(method, uri) {
+        var doit = true;
+        if (method == 'PUT') {
+            doit = confirm("This will remove all existing RDF triples from the database before adding the new ones. Ok?");
+        }
+        if (doit) {
+            switchPageIfNeeded();
+            var content = document.getElementById("update-content").value;
+            var contenttype = document.getElementById("update-content-type").value;
+            paste('Click on a JSON property to display a path here...', 'gray');
+            YAHOO.util.Connect.initHeader('Content-Type', contenttype);
+            YAHOO.util.Connect.asyncRequest(method, uri, {
+                success: function(o) {
+                            var response = YAHOO.lang.JSON.parse(o.responseText);
+                            var html = display(response, "response");
+                            parent.display.document.getElementById("data").innerHTML = html;
+                         }
+                }, content);
+        }
+    }
+    function del(uri) {
+        var doit = confirm("This may remove existing RDF triples from the database. Ok?");
+        if (doit) {
+            switchPageIfNeeded();
+            var template = document.getElementById("delete-template").value;
+            paste('Click on a JSON property to display a path here...', 'gray');
+            YAHOO.util.Connect.asyncRequest("DELETE", uri + "?template=" + template, {
+                success: function(o) {
+                            var response = YAHOO.lang.JSON.parse(o.responseText);
+                            var html = display(response, "response");
+                            parent.display.document.getElementById("data").innerHTML = html;
+                         }
+                });
+        }
+    }
+    function solve(i, limit, output) {
+        switchPageIfNeeded();
+        working();
+        var query = encodeURIComponent(document.getElementById("get-query").value);
+        paste('Click on a JSON property to display a path here...', 'gray');
+        YAHOO.util.Connect.asyncRequest("GET", "/swapp/rdf/db?query=" + query + "&cursor=" + i + "&limit=" + limit + "&output=" + output, {
+            success: function(o) {
+                        var response = YAHOO.lang.JSON.parse(o.responseText);
+                        var html = display(response, "response");
+                        clearTimeout(feedback);
+                        document.getElementById("feedback").innerHTML = "";
+                        parent.display.document.getElementById("data").innerHTML = html;
+                     }
+            });
+    }
+  </script>
+    
+  <style type="text/css">
+    .update-content {
+        font-family: monospace;
+        font-size: 12px;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        margin-top: 0px;
+        padding: 4px;
+        border: solid 1px black;
+     }
+     input {
+         font-family: monospace;
+     }
+     table.c7 {width:100%;height:100%;}
+     td.c4 {width:100%;height:100%;}
+     p.c1 {
+         font-weight: bold;
+         color: #18159D;
+         font-family: verdana;
+         font-size: 80%;
+         margin-top: 5px;
+     }
+     .url {
+         padding-bottom: 5px;
+         font-family: monospace;
+         font-size: 12px;
+     }
+  </style>
+ </head>
+ <body class="panel">
+   <table class="c7">
+    <tr>
+     <td>
+       <a href="/swapp" target="_top"><img style="border:0; float:left;" src="../img/api_explorer.png"></a>
+       <span style="font-family:verdana;font-weight:bold;font-size:10px;float:right;">
+        <a href="/www/doc/login/index.html" target="_top">Login</a> |
+        <a href="/www/doc/admin/index.html" target="_top">Admin</a> |
+        RDFDB |
+        <a href="/www/doc/sessionDB/index.html" target="_top">SessionDB</a> |
+        <a href="/www/doc/sessionEQ/index.html" target="_top">SessionEQ</a> |
+        <a href="../help.html" target="display">Help</a>
+       </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom" align="center">
+      <span style="font-family:monospace;font-size:20px;">/swapp/rdf/db</span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       UPDATE
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="put" name="put" type="button" onclick="update('PUT','/swapp/rdf/db');" class="button" value="&nbsp;PUT&nbsp;"> <input id="post" name="post" type="button" onclick="update('POST','/swapp/rdf/db');" class="button" value="POST"> /swapp/rdf/db
+       <input style="float:right;" type="button" onclick="document.getElementById('update-content').value='';" class="button" value="Clear">
+       <div style="padding:2px; margin-top:3px;">
+        &nbsp;Content-Type:
+        <select id="update-content-type" name="update-content-type" class="menu">
+         <option value="text/rdf+xml">
+          text/rdf+xml
+         </option>
+         <option value="application/x-turtle">
+          application/x-turtle
+         </option>
+        </select>
+       </div>
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td class="c4">
+      <textarea id="update-content" name="update-content" class="update-content" rows="5" cols="35" spellcheck="false">
+&lt;rdf:RDF
+  xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+  xmlns:foaf=&quot;http://xmlns.com/foaf/0.1/&quot; 
+  xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;&gt;
+    &lt;rdf:Description 
+      rdf:about=&quot;http://en.wikipedia.org/wiki/Tony_Benn&quot;&gt;
+        &lt;dc:title&gt;Tony Benn&lt;/dc:title&gt;
+        &lt;dc:publisher&gt;Wikipedia&lt;/dc:publisher&gt;
+            &lt;foaf:primaryTopic&gt;
+                &lt;foaf:Person&gt;
+                    &lt;foaf:name&gt;Tony Benn&lt;/foaf:name&gt;  
+                &lt;/foaf:Person&gt;
+            &lt;/foaf:primaryTopic&gt;
+    &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+      </textarea>
+     </td>
+    </tr>
+    <tr></tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="delete" name="delete" type="button" onclick="del('/swapp/rdf/db');" class="button" value="DELETE"> /swapp/rdf/db?template=
+       <input style="float:right;" type="button" onclick="document.getElementById('delete-template').value='';" class="button" value="Clear">
+       <input class="string" id="delete-template" name="delete-template" type="text" spellcheck="false" value="rdf(_, _, _)">
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       QUERY
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="get" name="get" type="button" onclick="myget();" class="button" value="GET"> /swapp/rdf/db?query=
+       <input style="float:right;" type="button" onclick="document.getElementById('get-query').value='';" class="button" value="Clear">
+      </span> 
+      <textarea class="string" id="get-query" name="get-query" rows="3" spellcheck="false">rdf(S, foaf:name, O)</textarea>
+      <span class="url" >
+       &amp;cursor=<input style="padding:0;width:2em;" type="text" id="i" name="i" value="0">&amp;limit=<select id="m" name="m" class="menu">
+       <option value="1" selected>
+        1
+       </option>
+       <option value="5">
+        5
+       </option>
+       <option value="10">
+        10
+       </option>
+       <option value="20">
+        20
+       </option>
+       <option value="50">
+        50
+       </option>
+       <option value="100">
+        99
+       </option>
+       <option value="10000000000000">
+        &infin;
+       </option>
+      </select>&amp;output=<select id="output" name="output" class="menu">
+       <option value="json" selected>
+        json
+       </option>
+       <option value="json-s">
+        json-s
+       </option>
+      </select>
+      <span style="position:relative;left:30px;" id="feedback"></span>
+      </span>
+      <span style="float:right" class="url">
+       <span style="font-family: default;">Paging:</span>
+       <input id="first" name="first" type="button" onclick="myfirst();" class="button" value="First"> 
+       <input id="next" name="next" type="button" onclick="mynext();" class="button" value="Next"> 
+       <input id="previous" name="previous" type="button" onclick="myprevious();" class="button" value="Previous"> 
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       PRESENTATION
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      Show as
+      <select name="presentation" class="menu">
+       <option value="HTML" selected>
+        HTML
+       </option>
+      </select>
+      &nbsp;&nbsp;&nbsp;Truncate long strings
+      <input type="checkbox" id="jsonTrunc" name="jsonTrunc">    
+      </td>
+    </tr>
+    <tr>
+     <td style="height:6px;"></td>
+    </tr>
+   </table>
+ </body>
+</html>
+

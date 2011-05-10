@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Hello World</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+	
+    <script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+    
+    <script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+
+
+    <style type="text/css" media="screen">  
+        body {
+        	background: #87A0A9;
+        	margin:0px;
+        	padding:30px;
+        	font-family:sans-serif;
+        	font-size:90%;
+        }
+        #page {
+        	width:754px;
+        	margin:0 auto;
+        }
+        #page2 {
+        	width:730px;
+        	padding:12px;
+        	float:left;
+        	background-color:white;
+        }
+        #header {
+        	width:730px;
+        	float:left;
+        	color:black;
+        	background-color: white;
+        }
+        #col1 {
+        	width:295px;
+        	height: 390px;
+        	margin: 10px 5px;
+			border: solid black 1px;
+			padding: 4px;
+        	float:left;
+        }
+        #col2 {
+        	width: 395px;
+        	height: 390px;
+        	margin: 10px 5px;
+			padding: 4px;
+			border: dashed black 1px;
+        	float: right;
+        }
+        #footer {
+        	width: 730px;
+        	padding: 10px 0 10px 0;
+        	float:left;
+        	text-align: center;
+        	background-color: white;
+        	color:black;
+        	font-size: x-small;
+        }
+        h1 {
+        	font-family: ariel, sans-serif;
+        	font-size: 32px;
+        	text-align: center;
+        }
+		p {
+			font-size: 12px;
+			margin: 0;
+			padding: 3px;
+			color: gray;
+			text-align: justify;
+			line-height: 1.1em;
+		}
+		code {
+		    display: block;
+		    margin: 3px 0 3px 0;
+			font-size: 11px;
+			text-align: left;
+			color: maroon;
+		}
+		#messages {
+			font-family: monospace;
+			font-size: 12px;
+			max-height: 340px;
+			width: 495px;
+			overflow: hidden;
+			border: none;
+		}
+
+    </style>
+
+    <script type="text/javascript">
+		YAHOO.util.Event.onDOMReady(function() {
+			YAHOO.util.Connect.asyncRequest('PUT', "/swapp/session/db", {
+				success: function() { 
+				    YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=message(M)", {
+				        success: function(o) {
+				            document.getElementById("messages").innerHTML += YAHOO.lang.JSON.parse(o.responseText).bindings[0].M + "<br>";
+				        }
+				    });
+				} 				    
+			}, "message('Hello World from Prolog!')."); 
+            YAHOO.util.Connect.setDefaultPostHeader(false); 
+            YAHOO.util.Connect.initHeader('Content-Type', 'application/x-turtle');
+			YAHOO.util.Connect.asyncRequest('POST', "/swapp/rdf/db", {
+				success: function() { 
+				    YAHOO.util.Connect.asyncRequest('GET', "/swapp/rdf/db?query=rdf(S,ex:message,literal(M))", {
+				        success: function(o) {
+				            document.getElementById("messages").innerHTML += YAHOO.lang.JSON.parse(o.responseText).bindings[0].M + "<br>";
+				        }
+				    });
+				} 				    
+			},'_:hello ex:message "Hello World from RDF!".'); 
+			YAHOO.util.Connect.asyncRequest('PUT', "/swapp/session/eq", {
+				success: function() { 
+				    YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/eq", {
+				        success: function(o) {
+				            document.getElementById("messages").innerHTML += YAHOO.lang.JSON.parse(o.responseText).events[0].args[0] + "<br>";
+				        }
+				    });
+				} 				    
+			}); 
+			setTimeout(function() {
+			    YAHOO.util.Connect.asyncRequest('POST', "/swapp/session/eq", {}, "message('Hello World from Event Queue!')."); 
+			}, 1000);
+		});	
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page"><div id="page2">
+    <div id="header">
+		<h1>Hello World</h1> 
+    </div>
+    <div id="col1">
+		<div id="messages">
+		</div>
+    </div>
+    <div id="col2">
+		<p>
+			<b>About: </b>
+            
+		</p>
+    </div>
+    <div id="footer">
+	 Last updated on 7/11, 2009
+    </div>
+  </div>
+</div>
+		
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Toy Expert System</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/container/assets/skins/sam/container.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/button/assets/skins/sam/button.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/fonts/fonts-min.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/treeview/assets/skins/sam/treeview.css" />
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/treeview/treeview-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/button/button-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/container/container-min.js"></script>
+
+    <style type="text/css" media="screen">
+        body {
+          background: #87A0A9;
+          margin: 0px;
+          padding: 30px;
+          font-family: sans-serif;
+          font-size: 90%;
+        }
+        #page {
+          width: 754px;
+          margin: 0 auto;
+        }
+        #page2 {
+          width: 730px;
+          padding: 12px;
+          float: left;
+          background-color: white;
+        }
+        #header {
+          width: 730px;
+          float: left;
+          color: white;
+          background-color: #00008B;
+        }
+        #col1 {
+          width: 400px;
+          margin: 20px 0 0 20px;
+          float: left;
+        }
+        #col2 {
+          width: 300px;
+          margin: 20px 0 0 0;
+          float: right;
+          height: 100%;
+        }
+        #footer {
+          width: 730px;
+          padding: 10px 0 10px 0;
+          float: left;
+          text-align: center;
+          background-color: #00008B;
+          color: white;
+          font-size: x-small;
+        }
+        h1 {
+          font-family: ariel, sans-serif;
+          text-align: center;
+        }
+        h2 {
+          font-family: verdana, sans-serif;
+          font-size: medium;
+          margin-left: 10px;
+          margin-top: 18px;
+          color: #009;
+        }
+        .rules {
+            display: block;
+            font-family: monospace;
+            width: 355px;
+            height: 205px;
+            padding: 8px 0 0 5px;
+            border: 1px #000 dashed;
+        }
+        .answer, .error {
+            padding: 18px 0 6px 0;
+        }
+        .error {
+            color: red;
+        }
+        #label {
+            font-family: verdana;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        #panel {
+            width: 400px;
+            padding-top: 12px;
+        }
+        #dialog {
+            font-family: monospace;
+            margin-top: 10px;
+            height: 120px;
+        }
+        #explanationPanel {
+            margin: 20px 0 20px 0;
+            display: none;
+        }
+        #explanation {
+            margin: 20px 0 0 0;
+        }
+        #goal {
+            border: 1px #000 solid;
+            font-family: monospace;
+            width: 255px;
+            margin: 0 0 0 3px;
+            padding: 2px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var goal = "";
+        var dialog;
+        var tree;
+        function addmsg(msg, c) {
+            var html = "<span class='" + c + "'>" + msg +"</span>";
+            document.getElementById("answer").innerHTML = html;
+        }
+        function getSolution() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=prove_json(" + goal + ", T)", {
+                success: update
+            })
+        }
+        function update(o) {
+            var response = YAHOO.lang.JSON.parse(o.responseText);
+	        if (response.success) {
+                tree = new YAHOO.widget.TreeView("explanation",[response.bindings[0].T]);
+                tree.render();
+		        addmsg("yes", "answer");
+		        document.getElementById("explanationPanel").style.display = "block";
+	        } else if (response.error) {
+		        addmsg(response.errormessage, "error");
+		        dialog.hide();
+	        } else {
+		        addmsg("no", "answer");
+            }
+            document.getElementById("ask").disabled = false;
+        }
+        function waitForEvents() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/eq?template=query(_)", {
+                success: function(o) {
+                    var response = YAHOO.lang.JSON.parse(o.responseText);
+                    if (response.events) {
+                        dialog.cfg.queueProperty("text",response.events[0].args[0]);
+                        dialog.render("dialog");
+                        dialog.show();
+                        waitForEvents();
+                    } else if (response.error == 'time_limit_exceeded') {
+                        waitForEvents();
+                    } else {
+                        alert(response.message)
+                    }
+                }
+            });
+        };
+        YAHOO.util.Event.onDOMReady(function() {
+            dialog = new YAHOO.widget.SimpleDialog("yn_dialog",
+	          { width: "360px",
+	            close: false,
+	            buttons: [
+	                { text:"Yes",
+                    handler: function() {
+                         this.hide();
+	                     YAHOO.util.Connect.asyncRequest('POST', "/swapp/session/eq", {}, "answer(yes)");
+	                 }
+	                },
+	   		        { text:"No",
+	   		        handler: function() {
+	   		             this.hide();
+	                     YAHOO.util.Connect.asyncRequest('POST', "/swapp/session/eq", {}, "answer(no)");
+	                 }
+	   		        }
+	   		    ]
+	        });
+	        dialog.setHeader("Querying the User");
+            document.getElementById("goal").focus();
+            YAHOO.util.Connect.asyncRequest('PUT', "/swapp/session/eq", {
+                success: waitForEvents
+            });
+            YAHOO.util.Event.on("ask", "click", function(e) {
+                goal = encodeURIComponent(document.getElementById("goal").value);
+                if (goal != "") {
+                    document.getElementById("ask").disabled = true;
+                    document.getElementById("answer").innerHTML = "?";
+                    document.getElementById("explanationPanel").style.display = "none";
+                    var content =
+			 ":- use_module(swapp(examples/expert)).\n\n" +
+			 document.getElementById("rules").value;
+                    YAHOO.util.Connect.asyncRequest('PUT', "/swapp/session/db", {
+                            success: getSolution
+                    }, content)
+                }
+            });
+            YAHOO.util.Event.on("expand", "click", function(e) {
+            	YAHOO.log("Expanding all TreeView  nodes.", "info", "example");
+            	tree.expandAll();
+            	YAHOO.util.Event.preventDefault(e);
+            });
+            YAHOO.util.Event.on("collapse", "click", function(e) {
+            	YAHOO.log("Collapsing all TreeView  nodes.", "info", "example");
+            	tree.collapseAll();
+            	YAHOO.util.Event.preventDefault(e);
+            });
+        });
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page">
+        <div id="page2">
+            <div id="header">
+                <h1>Toy Expert System</h1>
+            </div>
+            <div id="col1">
+                <span id="label">RULES (editable):</span>
+                <textarea id="rules" name="rules" class="rules" rows="1" cols="35" spellcheck="false">
+good_pet(X) &lt;- bird(X) &amp; small(X).
+good_pet(X) &lt;- cuddly(X) &amp; yellow(X).
+
+bird(X) &lt;- has_feathers(X) &amp; tweets(X).
+
+yellow(tweety) &lt;- true.
+
+askable(tweets(_)).
+askable(small(_)).
+askable(cuddly(_)).
+askable(has_feathers(_)).
+                </textarea>
+                <div id="panel">
+                    <span id="label">QUERY:</span><input type="text" id='goal' name="goal" value="good_pet(tweety)">
+                    <input type="button" id='ask' name="ask" value="Ask">
+                </div>
+                <div id="dialog"></div>
+            </div>
+            <div id="col2">
+                <div id="answerPanel">
+                    <span id="label">ANSWER: </span><span id="answer">?</span>
+                </div>
+                <div id="explanationPanel">
+                    <span id="label">EXPLANATION (<a id="expand" href="#">Expand</a> <a id="collapse" href="#">Collapse</a>):</span>
+                <div style="font-family: monospace;" id="explanation"></div>
+            </div>
+            <image style="position:absolute;top:347px; margin-left:160px;" src="tweety.png"/>
+        </div>
+        <div id="footer">
+            Last updated on 26/9, 2009
+        </div>
+    </div>
+</div>
+</body>
+</html>

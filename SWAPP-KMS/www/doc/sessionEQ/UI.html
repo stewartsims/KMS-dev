@@ -1,0 +1,241 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>
+   SWAPP Event API Explorer
+  </title>
+  <script type="text/javascript" language="JavaScript"> 
+    if (top.frames.length==0) {top.location="index.html";}
+  </script>
+
+  <link type="text/css" rel="stylesheet" href="../css/user_interface.css">
+  <link type="text/css" rel="stylesheet" href="../css/blueish.css" title="Blueish">
+
+  <script type="text/javascript" src="../js/yui/yahoo-min.js"></script> 
+  <script type="text/javascript" src="../js/yui/event-min.js"></script>
+  <script type="text/javascript" src="../js/yui/connection_core-min.js"></script>
+  <script type="text/javascript" src="../js/yui/json-min.js"></script> 
+  <script type="text/javascript" src="../js/jsonbrowser.js"></script> 
+  <script type="text/javascript" src="../js/utils.js"></script> 
+
+  <script type="text/javascript"> 
+    var req;
+    var feedback;
+
+    function createQueue() {
+        switchPageIfNeeded();
+    	paste('Click on a JSON property to display a path here...', 'gray');
+    	YAHOO.util.Connect.asyncRequest("PUT", "/swapp/session/eq", {
+    	    success: function(o) {
+    			        var response = YAHOO.lang.JSON.parse(o.responseText);
+    			        var html = display(response, "response");
+    			        parent.display.document.getElementById("data").innerHTML += html;
+    					scroll_to_end();
+                     }
+            }, "");
+    }	
+    function destroyQueue() {
+        switchPageIfNeeded();
+    	paste('Click on a JSON property to display a path here...', 'gray');
+    	YAHOO.util.Connect.asyncRequest("DELETE", "/swapp/session/eq", {
+    	    success: function(o) {
+    			        var response = YAHOO.lang.JSON.parse(o.responseText);
+    			        var html = display(response, "response");
+    			        parent.display.document.getElementById("data").innerHTML += html;
+    					scroll_to_end();
+                     }
+            }, "");
+    }		
+    function sendToQueue() {
+        switchPageIfNeeded();
+    	var content = document.getElementById('content').value;
+    	paste('Click on a JSON property to display a path here...', 'gray');
+    	YAHOO.util.Connect.asyncRequest("POST", "/swapp/session/eq", {
+    	    success: function(o) {
+    			        var response = YAHOO.lang.JSON.parse(o.responseText);
+    			        var html = display(response, "response");
+    			        parent.display.document.getElementById("data").innerHTML += html;
+    					scroll_to_end();
+                     }
+            }, content);
+    }	
+    function receiveFromQueue() {
+        switchPageIfNeeded();
+    	var template = document.getElementById("template").value;
+    	var method = document.getElementById("method").value;
+    	paste('Click on a JSON property to display a path here...', 'gray');
+        document.getElementById("get").disabled = true;
+        document.getElementById("abort").disabled = false;
+    	working();
+    	req = YAHOO.util.Connect.asyncRequest("GET", "/swapp/session/eq?template=" + template + "&method=" + method, {
+    	    success: function(o) {
+                        clearTimeout(feedback);
+                        document.getElementById("feedback").innerHTML = "";
+                        document.getElementById("get").disabled = false;
+                        document.getElementById("abort").disabled = true;
+            			var response = YAHOO.lang.JSON.parse(o.responseText);
+            			var html = display(response, "response");
+            			parent.display.document.getElementById("data").innerHTML += html;
+            			scroll_to_end();
+            			if (response.error == 'time_limit_exceeded') {
+            			    receiveFromQueue();
+            			}
+            			if (document.getElementById('repeat').checked && response.success) {
+            			    if (method == 'long-polling') {
+            			        receiveFromQueue();
+            			    } else {
+            			        setTimeout("receiveFromQueue()", 1000);
+            			    }
+            			} else {
+            			    //document.getElementById("get").disabled = false;
+            			}
+
+                     }
+            });
+    }
+  </script>
+  
+  <style type="text/css">
+     table.c7 {width:100%;}
+     td.c4 {width:100%;}
+     p.c1 {
+         font-weight: bold;
+         color: #18159D;
+         font-family: verdana;
+         font-size: 12px;
+         margin-top: 15px;
+     }
+     .url {
+         padding-bottom: 5px;
+         font-family: monospace;
+         font-size: 12px;
+     }
+  </style>
+ </head>
+ <body class="panel">
+   <table class="c7">
+    <tr>
+     <td>
+       <a href="/swapp" target="_top"><img style="border:0; float:left;" src="../img/api_explorer.png"></a>
+       <span style="font-family:verdana;font-weight:bold;font-size:10px;float:right;">
+        <a href="/www/doc/login/index.html" target="_top">Login</a> |
+        <a href="/www/doc/admin/index.html" target="_top">Admin</a> |
+        <a href="/www/doc/RDFDB/index.html" target="_top">RDFDB</a> |
+        <a href="/www/doc/sessionDB/index.html" target="_top">SessionDB</a> |
+        SessionEQ |
+        <a href="../help.html" target="display">Help</a>
+       </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom" align="center">
+      <span style="font-family:monospace;font-size:20px;">/swapp/session/eq</span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       CREATE EVENT QUEUE
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+          <input id="delete" name="delete" type="button" onclick="createQueue();" class="button" value="PUT"> /swapp/session/eq
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       DESTROY EVENT QUEUE
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="delete" name="delete" type="button" onclick="destroyQueue();" class="button" value="DELETE"> /swapp/session/eq
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       SEND EVENTS
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="delete" name="delete" type="button" onclick="sendToQueue();" class="button" value="POST"> /swapp/session/eq
+       <input style="float:right;" type="button" onclick="document.getElementById('content').value='';" class="button" value="Clear">
+      </span>  
+      <input class="string" id="content" name="content" type="text" spellcheck="false" value="[myevent(1), myevent(2)]">
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       RECEIVE EVENTS
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="get" name="get" type="button" onclick="receiveFromQueue();" class="button" value="GET"> /swapp/session/eq?template=
+       <input style="float:right;" type="button" onclick="document.getElementById('template').value='';" class="button" value="Clear">
+      </span> 
+      <input class="string" id="template" name="template" spellcheck="false" value="myevent(_)">
+      <span class="url" >&amp;method=<select style="" id="method" name="method" class="menu">
+      <option value="long-polling" selected>
+        long-polling
+      </option>
+      <option value="short-polling">
+        short-polling
+      </option>
+      </select>&amp;output=<select style="" id="output" name="output" class="menu">
+       <option value="json" selected>
+        json
+       </option>
+      </select>
+     <span style="position:relative;left:30px;" id="feedback"></span>
+     </span>
+     <span style="float:right;">
+      Repeat
+      <input type="checkbox" id="repeat" name="repeat"> &nbsp;&nbsp;
+      <input id="abort" name="abort" type="button" onclick="abortGet()" class="button" disabled="disabled" value="Abort">
+     </span>
+     </td>
+    </tr>
+    <tr>
+    <td valign="bottom">
+     <p class="c1">
+      PRESENTATION
+     </p>
+    </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      Show as
+      <select name="presentation" class="menu">
+       <option value="HTML" selected>
+        HTML
+       </option>
+      </select>
+      &nbsp;&nbsp;&nbsp;Truncate long strings
+      <input type="checkbox" id="jsonTrunc" name="jsonTrunc"> 
+      <input style="float:right;" type="button" onclick="parent.display.document.getElementById('data').innerHTML='';" class="button" value="Clear">   
+      </td>
+    </tr>
+    <tr>
+     <td style="height:6px;">
+     </td>
+    </tr>
+   </table>
+ </body>
+</html>
+

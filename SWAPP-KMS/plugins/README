@@ -1,0 +1,2 @@
+Plugin directory for SWAPP. Any file named   *.pl in this directory will
+be loaded into the SWAPP server. Files are loaded in alphabetical order.

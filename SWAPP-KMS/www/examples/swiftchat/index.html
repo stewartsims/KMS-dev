@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>SWIft Chat</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+	
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+
+    <script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.7.0/build/event/event-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
+
+    <style type="text/css" media="screen">
+        body {
+        	background: #87A0A9;
+        	margin:0px;
+        	padding:30px;
+        	font-family:sans-serif;
+        	font-size:90%;
+        }
+        #page {
+        	width:754px;
+        	margin:0 auto;
+        }
+        #page2 {
+        	width:730px;
+        	padding:12px;
+        	float:left;
+        	background-color:white;
+        }
+        #header {
+        	width:730px;
+        	float:left;
+        	color:white;
+        	background-color: #4DB9FF;
+        }
+        #col1 {
+        	width:500px;
+        	height: 400px;
+        	margin: 20px 0 0 20px;
+        	float:left;
+        }
+        #col2 {
+        	width:200px;
+        	margin: 20px 0 0 0;
+        	float:right;
+        	height:100%;
+        }
+        #footer {
+        	width:730px;
+        	padding:10px 0 10px 0;
+        	float:left;
+        	text-align: center;
+        	background-color: #4DB9FF;
+        	color:white;
+        	font-size:x-small;
+        }
+        h1 {
+        	font-family:verdana, sans-serif;
+        	text-align:center;
+        }
+        h2 {
+        	font-family:verdana, sans-serif;
+        	font-size: medium;
+        	margin-left:10px;
+        	margin-top:18px;
+        	color:black;
+        }
+        p {
+            width: 167px;
+            border: dashed black 1px;
+            margin: 10px 8px 0 0;
+            padding: 5px;
+            color: gray;
+            text-align: justify;
+            line-height: 1.1em;
+        }
+        #messages {
+            width: 500px;
+            height: 350px;
+            overflow: auto;
+            border: 1px #000 dashed;
+        }
+        .msg {
+            padding: 4px 4px 4px 4px;
+        }
+        .nick {
+            font-weight: bold;
+        }
+        #panel {
+            width: 500px;
+            padding-top: 12px;
+            text-align: center;
+        }
+        #msg {
+            width: 450px;
+        }
+        #participants {
+            width: 180px;
+            height: 150px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var nick;
+        var myDialog;
+        function appendOptionLast(nick) {
+            var elOptNew = document.createElement('option');
+            elOptNew.text = nick;
+            var elSel = document.getElementById('participants');
+            try {
+                elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+            } catch(ex) {
+                elSel.add(elOptNew); // IE only
+            }
+        }
+        function init() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=init(Status)", {
+                success: function(o) {
+                            var status = YAHOO.lang.JSON.parse(o.responseText).bindings[0].Status;
+                            if (status.args[0] == 0) {
+                                myDialog.show();
+                            } else {
+                                nick = status.args[1];
+                                var participants = status.args[2];
+                                for (var i in participants) {
+                                    document.getElementById("participants").innerHTML += "<option>" + participants[i] + "</option>";
+                                }
+                            }
+                            YAHOO.util.Connect.asyncRequest('PUT', "/swapp/session/eq", {
+                                success: function () {
+                                    heartBeat();
+                                    waitForEvents();
+                                }                                       
+                            });
+                      }
+                });
+        }
+        function heartBeat() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=heartbeat", {
+                success: function() {
+                    setTimeout(heartBeat, 10000);
+                }
+            });
+        }
+        function enter() {
+            nick = document.getElementById("nick").value;
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=enter('" + nick + "', Participants)", {
+                success: function(o) {
+                            myDialog.hide();
+                            var participants = YAHOO.lang.JSON.parse(o.responseText).bindings[0].Participants;
+                            for (var i in participants) {
+                                document.getElementById("participants").innerHTML += "<option>" + participants[i] + "</option>";
+                            }
+                            document.getElementById("msg").focus();
+                         }
+                });
+        }
+        function processEvents(events) {
+            var div = document.getElementById("messages");
+            for (i in events) {
+                var ev = events[i];
+                if (ev.functor == "msg") {
+                    var from = ev.args[0];
+                    var text = ev.args[1];
+                    var html = "<div class='msg'><span class='nick'>" + from + "</span>: " + text +"</div>";
+                    div.innerHTML += html;
+                    div.scrollTop = div.scrollHeight;
+                } else if (ev.functor == "entered") {
+                    appendOptionLast(ev.args[0]);
+                } else if (ev.functor == "left") {
+                    var elSel = document.getElementById("participants");
+                    var i;
+                    for (i = elSel.length - 1; i>=0; i--) {
+                        if (elSel.options[i].text == ev.args[0]) {
+                            elSel.remove(i);
+                        }
+                    }
+                } 
+            }
+        }
+        function waitForEvents() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/eq", {
+                success: function(o) {
+                    var response = YAHOO.lang.JSON.parse(o.responseText);
+                    if (response.success) {
+                        processEvents(response.events);
+                        waitForEvents();
+                    } else if (response.error == 'time_limit_exceeded') {
+                        waitForEvents();
+                    } else {
+                        alert(response.message)
+                    }
+                }
+            });
+        };
+        YAHOO.util.Event.onDOMReady(function() {
+            myDialog = new YAHOO.widget.Panel("myDialog", {
+                fixedcenter: true,
+                modal: true,
+                visible: false
+            }); 
+            myDialog.render();        
+            document.getElementById("msg").onkeyup = function(e) {
+        	    if (e.keyCode == 13 && this.value) {
+        		    YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=add_to_chat('" + nick +"','" + this.value + "')", {
+        		        success: function() {}
+        		    });
+                 	this.value = "";
+                }
+            }
+            init();
+        });
+                
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page">
+        <div id="page2">
+            <div id="header">
+                <h1><span style="color:#000">SWI</span><span style="color:#00C">ftChat and Eliza</span</h1> 
+            </div>
+            <div id="col1">
+                <div id="messages"></div>
+                <div id="panel">
+                    Msg: <input type="text" id='msg' name="msg">
+                </div>
+            </div>
+            <div id="col2">
+                <select multiple id="participants"></select>
+                <p>
+                    <b>About: </b>
+                    This demo uses Comet style (long-polling) "server pushing" of events to implement a 
+                    fairly nice and very responsive chat system. A chat demo is usually considered to be
+                    the "Hello world" of the Comet technology, but this demo comes with a twist: If you 
+                    and Eliza are the only people in the room, but only then, she will start talking to you...
+                </p>
+            </div>
+            <div id="footer">
+                Last updated on 26/9, 2009
+            </div>
+            <div id="myDialog">
+                <div class="hd">Your nick name? </div>
+                <div class="bd">
+                    <input type="text" id="nick" />
+                    <button onclick="enter();">Enter</button>
+                </div>
+            </div>
+        </div>
+    </div>	
+</body>
+</html>

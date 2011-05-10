@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>SWAPP Store</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css" />
+    
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js"></script>
+
+    <style type="text/css" media="screen">
+        body {
+			background: #87A0A9;
+			margin: 0px;
+			padding: 30px;
+			font-family: sans-serif;
+			font-size: 90%;
+        }
+        #page {
+			width: 754px;
+			margin: 0 auto;
+        }
+        #page2 {
+			width: 730px;
+			padding: 12px;
+			float: left;
+			background-color: white;
+		    -moz-border-radius: 20px;
+		    -webkit-border-radius: 20px;
+        }
+        #header {
+			width: 728px;
+			float: left;
+			color: #CCC9C0;
+			border: solid black 2px;
+			background-color: #F7F4F1;
+			font-size: 20px;
+		    -moz-border-radius: 20px;
+		    -webkit-border-radius: 20px;
+		    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(218, 218, 220)), to(rgb(180, 179, 184)));
+		    background: -moz-gradient(linear, 0% 0%, 0% 100%, from(rgb(218, 218, 220)), to(rgb(180, 179, 184)));
+        }
+        #col1 {
+			width: 500px;
+			height: 380px;
+			margin: 20px 0 0 0px;
+			float: left;
+        }
+        #col2 {
+        	width: 195px;
+        	height: 380px;
+        	margin: 10px 5px;
+			padding: 4px;
+			border: dashed black 1px;
+        	float: right;
+        }
+        #footer {
+			width: 728px;
+			border: solid black 2px;
+			padding: 10px 0 10px 0;
+			float: left;
+			text-align: center;
+			background-color: #F7F4F1;
+			color: black;
+			font-size: x-small;
+        }
+        h1 {
+            font-family: "Lucida Grande", "Century Gothic", "Trebuchet MS";
+			text-align: center;
+        }
+        h2 {
+			font-family: "Lucida Grande", "Century Gothic", "Trebuchet MS";
+			font-size: medium;
+			text-align: center;
+			margin-bottom: 20px;
+        }
+        #haiku {
+            font-family: "Lucida Grande", "Century Gothic", "Trebuchet MS";
+            text-shadow: 4px 4px 12px gray;
+            font-size: 20px;
+            height: 150px;
+            margin: 20px 0 30px 80px;
+        }
+        p.haiku3 {
+            padding: 0 0 0 40px;
+        }
+		p.about {
+			font-size: 12px;
+			margin: 0;
+			padding: 3px;
+			color: gray;
+			text-align: justify;
+			line-height: 1.1em;
+		}
+		ul {
+		    font-size: 12px;
+			color: gray;
+            margin: 2px 0 2px 15px;
+            padding: 0;
+            list-style: none;
+		}
+		button {
+		    font-size: 12px;
+		    margin-bottom: 10px;
+		}
+		.shortbutton {
+		    width: 77px;
+		}
+		.longbutton {
+		    width: 160px;
+
+		}
+		#main, #store {
+		    float:right;
+		    width: 210px;
+		    height: 150px;
+		    margin-right: 80px;
+		    border: ridge gray 4px;
+		    text-shadow: 2px 2px 6px yellow;
+		    -moz-border-radius: 20px;
+		    -webkit-border-radius: 20px;
+		}
+		#store {
+		    display: none;
+		}
+    </style>
+
+    <script type="text/javascript">
+        var html;
+        var cursor = 1;
+        var haikuID;
+        function addHaiku(arr) {
+            html = "<p class='haiku1'>" + arr[0].charAt(0).toUpperCase() + arr[0].substring(1).replace('_',' ') +",</p>";
+            html += "<p class='haiku2'>" + arr[1].replace('_',' ') +",</p>";
+            html += "<p class='haiku3'>" + arr[2].replace('_',' ') +".</p>";
+            document.getElementById("haiku").innerHTML = html;
+        }
+        function generateHaiku() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/rdf/db?query=haiku(Haiku)", {
+                success: function(o) {
+                    var response = YAHOO.lang.JSON.parse(o.responseText);
+                    addHaiku(response.bindings[0].Haiku);
+                }
+            });
+        }
+        function storeHaiku() {
+            YAHOO.util.Connect.setDefaultPostHeader(false); 
+            YAHOO.util.Connect.initHeader('Content-Type', 'application/x-turtle');
+            YAHOO.util.Connect.asyncRequest('POST', "/swapp/rdf/db", {}, 
+                '@prefix ex: <http://example.org/stuff/1.0/> . _:haiku ex:saved "' + html + '".'
+            );
+        }
+        function deleteStoredHaiku() {
+            YAHOO.util.Connect.asyncRequest('DELETE', "/swapp/rdf/db?template=rdf('" + haikuID + "',_,_)", {});
+        }
+        function getStoredHaiku() {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/rdf/db?query=rdf(ID, ex:saved, literal(Html))&cursor=" + cursor, {
+                success: function(o) {
+                    var response = YAHOO.lang.JSON.parse(o.responseText);
+                    if (response.success) {
+                        haikuID = response.bindings[0].ID;
+                        document.getElementById("haiku").innerHTML = "<span style='color:maroon;'>" + response.bindings[0].Html + "</span>";
+                    } else {
+                        document.getElementById("haiku").innerHTML = "<span style='color:maroon;'>No (more) haikus in store.</span>";
+                    }
+                }
+            });
+        }
+        function show(div) {
+            if (div == 'main') {
+                document.getElementById('store').style.display = 'none';
+                document.getElementById('main').style.display = 'block';
+                document.getElementById('generate').focus();
+                generateHaiku();
+            } else {
+                document.getElementById('main').style.display = 'none';
+                document.getElementById('store').style.display = 'block';
+                document.getElementById('first').focus();
+                cursor = 0;
+                getStoredHaiku();
+            }
+        }
+        YAHOO.util.Event.onDOMReady(function() {
+            document.getElementById('generate').focus();
+            generateHaiku();
+        });
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page">
+        <div id="page2">
+            <div id="header">
+                <h1>SWAPP Store</h1> 
+            </div>
+            <div id="col1">
+                <div id="haiku"></div>
+                <image style="position:absolute;top:350px;" src="bodhidharma.png"/>
+                <div id="main">
+                    <h2>Do you like this haiku?</h2>
+                    <center>
+                        <div>
+                            <button class="longbutton" onclick="storeHaiku();">Yes, add it to the store</button>
+                        </div>
+                        <div>
+                            <button class="longbutton" id="generate" onclick="generateHaiku();">Generate a new haiku</button>
+                        </div>
+                        <div>
+                            <button class="longbutton" onclick="show('store');">Browse the haiku store</button>
+                        </div>
+                    </center>
+                </div>
+                <div id="store">
+                    <h2>Browse the haiku store</h2>
+                    <center>
+                        <div>
+                            <button class="shortbutton" id="first" onclick="cursor++; getStoredHaiku();">Next</button>
+                            <button class="shortbutton" onclick="cursor--; getStoredHaiku();">Previous</button>
+                        </div>
+                        <div>
+                            <button class="longbutton" onclick="deleteStoredHaiku();">Delete this haiku</button>
+                        </div>
+                        <div>
+                            <button class="longbutton" onclick="show('main');">Return to generate haikus</button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+            <div id="col2">
+        		<p class="about">
+        			<b>About: </b>
+        			This app uses heuristics on the server to construct random haiku poems from Wordnet. Haiku is a Japanese form of poetry which in its classical form consists of seven&shy;teen syllables. In English haiku poems, these are distributed over three lines:
+        		</p>
+        		<ul>
+                    <li>Five syllables</li>
+                    <li>Seven syllables</li>
+                    <li>Five syllables</li>
+                </ul>
+                <p class="about">
+                    Syntactically, they may for example look as follows:
+                </p>
+        		<ul>
+                    <li>Prep Det A N</li>
+                    <li>Det A N Part Vsg3</li>
+                    <li>Mod Adv</li>
+                </ul>
+        		<p class="about">
+                    The RDF version of Wordnet used contains 203,147 wordforms, so the possibilities are endless. Most of them are bad, but the app allows you to save the ones that you like, for others to admire, or perhaps to delete if they do not like them. Who knows, perhaps some really beau&shy;tiful haikus will emerge in the process. (They are in there...)
+        		</p>
+            </div>
+            <div id="footer">
+                Last updated on 26/9, 2009
+            </div>
+        </div>
+    </div>
+</body>
+</html>

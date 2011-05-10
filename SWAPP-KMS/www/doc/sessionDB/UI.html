@@ -1,0 +1,289 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>
+   SWAPP SessionDB API Explorer
+  </title>
+  <script type="text/javascript" language="JavaScript"> 
+    if (top.frames.length==0) {top.location="index.html";}
+  </script>
+  
+  <link type="text/css" rel="stylesheet" href="../css/user_interface.css">
+  <link type="text/css" rel="stylesheet" href="../css/blueish.css" title="Blueish">
+
+  <script type="text/javascript" src="../js/yui/yahoo-min.js"></script> 
+  <script type="text/javascript" src="../js/yui/event-min.js"></script>
+  <script type="text/javascript" src="../js/yui/connection_core-min.js"></script>
+  <script type="text/javascript" src="../js/yui/json-min.js"></script> 
+  <script type="text/javascript" src="../js/jsonbrowser.js"></script> 
+  <script type="text/javascript" src="../js/utils.js"></script> 
+
+  <script type="text/javascript"> 
+    function myget() {
+        var i = parseInt(document.getElementById('i').value);
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value;
+        solve(i, m, output);
+    }    
+    function myfirst() {
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value
+        solve(0, m, output);
+        document.getElementById('i').value = 0;
+    }
+    function mynext() {
+        var i = parseInt(document.getElementById('i').value);
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value;
+        var j = i + 1;
+        solve(j, m, output);
+        document.getElementById('i').value = j;
+    }
+    function myprevious() {
+        var i = parseInt(document.getElementById('i').value);
+        var m = parseInt(document.getElementById('m').value);
+        var output = document.getElementById('output').value;
+        var j = i - 1;
+        solve(j, m, output);
+        document.getElementById('i').value = j;
+    }
+    function update(method, uri) {
+        switchPageIfNeeded();
+    	var content = document.getElementById("update-content").value;
+    	paste('Click on a JSON property to display a path here...', 'gray');
+    	YAHOO.util.Connect.asyncRequest(method, uri, {
+    	    success: function(o) {
+                        var response = YAHOO.lang.JSON.parse(o.responseText);
+    			        var html = display(response, "response");
+    			        parent.display.document.getElementById("data").innerHTML = html;
+                     }
+            }, content);
+    }
+    function solve(i, limit, output) {
+        switchPageIfNeeded();
+        working();
+    	var query = encodeURIComponent(document.getElementById("get-query").value);
+    	paste('Click on a JSON property to display a path here...', 'gray');
+    	YAHOO.util.Connect.asyncRequest("GET", "/swapp/session/db?query=" + query + "&cursor=" + i + "&limit=" + limit + "&output=" + output, {
+    	    success: function(o) {
+    			        var response = YAHOO.lang.JSON.parse(o.responseText);
+    			        var html = display(response, "response");
+    			        clearTimeout(feedback);
+    			        document.getElementById("feedback").innerHTML = "";
+    			        parent.display.document.getElementById("data").innerHTML = html;
+                     }
+            });
+    }
+    function del(uri) {
+        switchPageIfNeeded();
+    	var template = document.getElementById("delete-template").value;
+    	paste('Click on a JSON property to display a path here...', 'gray');
+    	YAHOO.util.Connect.asyncRequest("DELETE", uri + "?template=" + template, {
+    	    success: function(o) {
+    			        var response = YAHOO.lang.JSON.parse(o.responseText);
+    			        var html = display(response, "response");
+    			        parent.display.document.getElementById("data").innerHTML = html;
+                     }
+            });
+    }
+  </script>
+  
+  <style type="text/css">
+    .update-content {
+        font-family: monospace;
+        font-size: 12px;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        margin-top: 0px;
+        padding: 4px;
+        border: solid 1px black;
+     }
+     table.c7 {width:100%;height:100%;}
+     td.c4 {width:100%;height:100%;}
+     p.c1 {
+         font-weight: bold;
+         color: #18159D;
+         font-family: verdana;
+         font-size: 80%;
+         margin-top: 5px;
+     }
+     .url {
+         padding-bottom: 5px;
+         font-family: monospace;
+         font-size: 12px;
+     }
+  </style>
+ </head>
+ <body class="panel">
+   <table class="c7">
+    <tr>
+     <td>
+      <a href="/swapp" target="_top"><img style="border:0; float:left;" src="../img/api_explorer.png"></a>
+      <span style="font-family:verdana;font-weight:bold;font-size:10px;float:right;">
+       <a href="/www/doc/login/index.html" target="_top">Login</a> |
+       <a href="/www/doc/admin/index.html" target="_top">Admin</a> |
+       <a href="/www/doc/RDFDB/index.html" target="_top">RDFDB</a> |
+       SessionDB |
+       <a href="/www/doc/sessionEQ/index.html" target="_top">SessionEQ</a> |
+       <a href="../help.html" target="display">Help</a>
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom" align="center">
+      <span style="font-family:monospace;font-size:20px;">/swapp/session/db</span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       UPDATE
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="put" name="put" type="button" onclick="update('PUT','/swapp/session/db');" class="button" value="&nbsp;PUT&nbsp;"> <input id="post" name="post" type="button" onclick="update('POST','/swapp/session/db');" class="button" value="POST">  /swapp/session/db
+       <input style="float:right;" type="button" onclick="document.getElementById('update-content').value='';" class="button" value="Clear">
+      </span> 
+     </td>
+    </tr>
+    <tr>
+     <td class="c4">
+<textarea id="update-content" name="update-content" class="update-content" rows="5" cols="35" spellcheck="false">
+% Some simple test Prolog programs
+% borrowed from "Learn Prolog Now"
+% --------------------------------
+
+
+% Knowledge bases
+
+loves(vincent, mia).
+loves(marcellus, mia).
+loves(pumpkin, honey_bunny).
+loves(honey_bunny, pumpkin).
+ 
+jealous(X,Y) :- loves(X,Z), loves(Y,Z).
+
+
+% Lists
+
+suffix(Xs, Ys) :- append(_, Ys, Xs). 
+
+prefix(Xs, Ys) :- append(Ys, _, Xs). 
+
+sublist(Xs, Ys) :- suffix(Xs, Zs), prefix(Zs, Ys).
+
+
+% DCG
+
+s(s(NP,VP)) --> np(NP), vp(VP).
+ 
+np(np(DET,N)) --> det(DET), n(N).
+ 
+vp(vp(V,NP)) --> v(V), np(NP).
+vp(vp(V)) --> v(V).
+ 
+det(det(the)) --> [the].
+det(det(a)) --> [a].
+ 
+n(n(woman)) --> [woman].
+n(n(man)) --> [man].
+ 
+v(v(shoots)) --> [shoots].
+</textarea>
+     </td>
+    </tr>
+    <tr></tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="delete" name="delete" type="button" onclick="del('/swapp/session/db');" class="button" value="DELETE"> /swapp/session/db?template=
+       <input style="float:right;" type="button" onclick="document.getElementById('delete-template').value='';" class="button" value="Clear">
+      </span>  
+      <input class="string" id="delete-template" name="delete-template" type="text" spellcheck="false" value="loves(_, mia)">
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       QUERY
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="get" name="get" type="button" onclick="myget();" class="button" value="GET"> /swapp/session/db?query=
+       <input style="float:right;" type="button" onclick="document.getElementById('get-query').value='';" class="button" value="Clear">
+      </span> 
+      <textarea class="string" id="get-query" name="get-query" rows="3" spellcheck="false">jealous(X, Y)</textarea>
+      <span class="url" >&amp;cursor=<input style="font-size:80%;padding:0;width:3em;" type="text" id="i" name="i" value="0">&amp;limit=<select id="m" name="m" class="menu">
+       <option value="1" selected>
+        1
+       </option>
+       <option value="5">
+        5
+       </option>
+       <option value="10">
+        10
+       </option>
+       <option value="20">
+        20
+       </option>
+       <option value="50">
+        50
+       </option>
+       <option value="100">
+        99
+       </option>
+       <option value="10**1000">
+        &infin;
+       </option>
+      </select>&amp;output=<select style="" id="output" name="output" class="menu">
+       <option value="json" selected>
+        json
+       </option>
+       <option value="json-s">
+        json-s
+       </option>
+      </select>
+      <span style="position:relative;left:30px;" id="feedback"></span>
+      </span>
+      <span style="float:right" class="url">
+       <span style="font-family: default;">Paging:</span>
+       <input id="first" name="first" type="button" onclick="myfirst();" class="button" value="First"> 
+       <input id="next" name="next" type="button" onclick="mynext();" class="button" value="Next"> 
+       <input id="previous" name="previous" type="button" onclick="myprevious();" class="button" value="Previous"> 
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       PRESENTATION
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      Show as
+      <select name="presentation" class="menu">
+       <option value="HTML" selected>
+        HTML
+       </option>
+      </select>
+      &nbsp;&nbsp;&nbsp;Truncate long strings
+      <input type="checkbox" id="jsonTrunc" name="jsonTrunc">    
+      </td>
+    </tr>
+    <tr>
+     <td style="height:6px;">
+     </td>
+    </tr>
+   </table>
+ </body>
+</html>
+

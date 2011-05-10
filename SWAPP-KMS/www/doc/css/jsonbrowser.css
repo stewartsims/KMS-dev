@@ -1,0 +1,32 @@
+﻿
+table.prop {
+	width:100%;
+}
+th.prop, td.prop {
+    font-size: 90%;
+	border:1px solid #000;
+	padding:.5em;
+}
+th.prop {
+	font-weight:bold;
+	text-align:right;
+	vertical-align: top;
+	cursor: pointer;
+}
+td.prop {
+	width:100%;
+}
+table {
+	margin-bottom:0.5em;
+}
+
+caption { text-align: left; font-size: 8px; font-variant: small-caps; margin-bottom: 0px; }
+
+.BOOL       { color: maroon; }
+.NUMBER     { color: green; }
+.NULL       { color: #91AA9D; }
+.EMPTY      { color: #91AA9D; }
+span.ARRAY  { color: #91AA9D; }
+span.OBJ    { color: #91AA9D; }
+table.OBJ   { background-color: white;}
+table.ARRAY { background-color: #FFFAFA;}

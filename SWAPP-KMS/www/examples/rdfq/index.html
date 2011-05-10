@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Centering AutoComplete On a Page</title>
+
+<style type="text/css">
+/*margin and padding on body element
+  can introduce errors in determining
+  element position and are not recommended;
+  we turn them off as a foundation for YUI
+  CSS treatments. */
+body {
+	margin:0;
+	padding:0;
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="ac_ysearch_json_clean-filer/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="ac_ysearch_json_clean-filer/autocomplete.css">
+<script type="text/javascript" src="ac_ysearch_json_clean-filer/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="ac_ysearch_json_clean-filer/animation-min.js"></script>
+<script type="text/javascript" src="ac_ysearch_json_clean-filer/connection-min.js"></script>
+<script type="text/javascript" src="ac_ysearch_json_clean-filer/json-min.js"></script>
+<script type="text/javascript" src="ac_ysearch_json_clean-filer/datasource-min.js"></script>
+<script type="text/javascript" src="ac_ysearch_json_clean-filer/autocomplete-min.js"></script>
+
+
+<style type="text/css">
+body, h1 { margin:0;padding:0; } /* needed for known issue with Dom.getXY() in safari for absolute elements in positioned containers */
+label {
+    color: #E76300;
+    font-weight: bold;
+}
+#ysearch { 
+    text-align: center;
+    margin-top: 200px;
+}
+#ysearchinput {
+    position: static;
+    width: 20em;
+} /* to center, set static and explicit width: */
+#ysearchcontainer {
+    text-align: left;
+    width: 50em;
+} /* to center, set left-align and explicit width: */
+.pos {
+    color: #00C;
+}
+#myAutoComplete {
+    width:40em; /* set width here or else widget will expand to fit its container */
+    padding-bottom:20em; /* allow enough real estate for the container */
+}
+#myContainer {
+    width:40em; /* set width here or else widget will expand to fit its container */
+    padding-bottom:20em; /* allow enough real estate for the container */
+}
+
+</style>
+
+
+
+</head>
+<body class="yui-skin-sam">
+    
+<div id="myAutoComplete">
+	<input id="myInput" type="text">
+	<div id="myContainer"></div>
+</div>
+<input id="updateInput" type="text">
+
+<script type="text/javascript">
+YAHOO.example.Centered = function() {
+    var myDataSource = new YAHOO.util.XHRDataSource("/swapp/session/db");
+    myDataSource.responseSchema = {
+        resultsList: "bindings[0].Sent"
+    };
+    // Instantiate AutoComplete
+    var myAutoComp = new YAHOO.widget.AutoComplete("myInput", "myContainer", myDataSource);
+    myAutoComp.queryMatchContains = true;
+    myAutoComp.maxResultsDisplayed = 10;
+    myAutoComp.alwaysShowContainer = true;
+    myAutoComp.generateRequest = function(sQuery) {
+        return "?query=answer('" + sQuery + "',Sent)&limit=10";
+    };
+    return {
+        oDS: myDataSource,
+        oAC: myAutoComp
+    };
+}();
+</script>
+
+</body></html>

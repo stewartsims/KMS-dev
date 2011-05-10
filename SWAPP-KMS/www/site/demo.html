@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>
+            SWAPP
+        </title>
+        <link rel="stylesheet" type="text/css" media="screen,projection" href="assets/swapp.css" />
+        <style type="text/css">
+            #collection {
+                height: 470px;
+                overflow: auto;
+            }
+            table {
+                margin: 0 34px 0 14px;
+            }
+            td {
+                padding: 10px;
+            }
+            td.text {
+                font-size: small;
+                line-height: 1.2em;
+                text-align: normal;
+                width: 170px;
+            }
+            .img {
+                margin: 3px;
+                border: 1px solid gray;
+            }
+            p#splash {
+                margin-top: 30px;
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            <div id="page2">
+               <div id="header">
+                    <div id="logo"><img src="assets/logo.png" alt="SWAPP" /></div>
+                    <form id="login" action="/">
+                        <div>
+                            <input class="text" size="10" id="username" type="text" /><br />
+                            <input class="text" size="10" id="password" type="password" /><br />
+                            <input src="assets/login.gif" alt="Login" class="btn" type="image" />
+                        </div>
+                    </form>
+                </div>
+                <ul id="nav">
+                    <li>
+                        <a href="home.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="documentation.html">Documentation</a>
+                    </li>
+                    <li>
+                        <strong>Demo</strong>
+                    </li>
+                    <li>
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li>
+                        <a href="development.html">Development</a>
+                    </li>
+                    <li>
+                        <a href="support.html">Support</a>
+                    </li>
+                </ul>
+                <h1>
+                    <img src="assets/banner.jpg" alt="Banner" height="110" width="950" />
+                </h1>
+                <div id="content">
+                    <div id="content-group">
+                        <div id="content-main">
+                            <h2>
+                                Demonstrations.&nbsp;
+                            </h2>
+                            <p id="intro">
+                                Here we put on display small examples demonstrating potential uses of SWAPP. Applications such as these are easy to build. 
+                            </p>
+                            <div id="collection">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <a href="/www/examples/wordnet_table/index.html"><img class="img" alt="" src="assets/table_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>WordNet Tabling</b><br />
+                                            Represents WordNet data in RDF and uses Prolog and client-side JavaScript to generate and display table pages of word info.
+                                        </td>
+                                        <td>
+                                            <a href="/www/examples/wordnet_autocomplete/index.html"><img class="img" alt="" src="assets/wordnet_ac_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>WordNet Search</b><br />
+                                            Autocomplete search of WordNet combined with hypertext traversal along its synonym, hyperonym and hyponym axes.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/www/examples/wordnet_graph/index.html"><img class="img" alt="" src="assets/visual_wordnet_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>Visual WordNet</b><br />
+                                            Represents WordNet data in RDF and uses Prolog and client-side JavaScript to generate and display an animated word graph.
+                                        </td>
+                                        <td>
+                                            <a href="/www/examples/wordnet_haiku/index.html"><img class="img" alt="" src="assets/haiku_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>WordNet Haiku Poetry</b><br />
+                                            This app uses heuristics on the server to construct random haiku poems from WordNet. Allows you to store the ones you like.
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/www/examples/prolog/index.html"><img class="img" alt="" src="assets/prolog_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>SWI-Prolog Online</b><br />
+                                            Have we reimplemented SWI-Prolog in JavaScript? Well, not quite, but we have indeed tried to make it appear like we have!
+                                        </td>
+                                        <td>
+                                            <a href="/www/examples/nqueens/index.html"><img class="img" alt="" src="assets/nqueens_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>N-Queens Solver</b><br />
+                                            A really classical Prolog example. Here also with the option of using a much more efficient clp(FD) solving method.
+                                        </td>                                        
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/www/examples/parser/index.html"><img class="img" alt="" src="assets/parser_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>DCG Laboratory</b><br />
+                                            Implements a subset of DCG that allows you to explore the relation between grammars, strings and parse trees.
+                                        </td>
+                                        <td>
+                                            <a href="/www/examples/expert_system/index.html"><img class="img" alt="" src="assets/expert_system_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>Toy Expert System</b><br />
+                                            With rules interpreted by &ldquo;meta-interpreter&rdquo;. Also featuring query-the-user actions triggered by &ldquo;server-pushed&rdquo; events.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/www/examples/swiftchat/index.html"><img class="img" alt="" src="assets/swiftchat_thumb.png" /></a>
+                                        </td>
+                                        <td valign="top" class="text">
+                                            <b>SWIftChat and Eliza</b><br />
+                                            Uses Comet style &ldquo;server pushing&rdquo; of events to implement a neat chat system. Lonely in the room? Chat with Eliza!
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <p style="margin-top:20px;">Source code for the above examples, as well as for some even simpler examples, are available in the <a href="">examples directory</a>.</p>
+                        </div>
+                    </div>
+                    <div id="content-sub">
+                        <div class="subnav">
+                            <h3>
+                                Administration
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">Users</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">Statistics</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="subnav">
+                            <h3>
+                                API Explorers
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/login/index.html">/swapp/login</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/admin/index.html">/swapp/admin/*</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">/swapp/rdf/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">/swapp/session/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">/swapp/session/eq</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <hr />
+                    <p>
+                        © Copyright 2009 Torbjörn Lager and Jan Wielemaker
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://localhost:8080/" xmlns:tns="http://localhost:8080/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="parseLogic" type="tns:parseLogic"/>
+
+  <xs:element name="parseLogicResponse" type="tns:parseLogicResponse"/>
+
+  <xs:complexType name="parseLogic">
+    <xs:sequence>
+      <xs:element name="kaIdentifier" type="xs:string" minOccurs="0"/>
+      <xs:element name="logic" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="parseLogicResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

@@ -1,0 +1,383 @@
+/*
+-----------------------------------------------
+TRANAKA ISLAND ESTATES LLC
+Author:   Douglas Bowman
+----------------------------------------------- */
+
+/* =Start with these
+----------------------------------------------- */
+body {
+  background:white;
+  margin:0;
+  padding:10px;
+  font:small "Lucida Grande",LucidaGrande,Verdana,Sans-serif;
+  color:black;
+  }
+a {
+  font-weight:bold;
+  color:#47a;
+  text-decoration:none;
+  }
+a:hover {
+  color:#357;
+  text-decoration:underline;
+  }
+a img {
+  border-width:0;
+  }
+h1, h2, h3, ul, li, form {
+  margin:0;
+  padding:0;
+  }
+ul, li {
+  list-style:none;
+  }
+
+
+
+/* =Page
+----------------------------------------------- */
+body {
+  background: #87A0A9; /* url("kandinsky.jpg") repeat 0 0;*/
+  color:#fff;
+  }
+#page {
+  width:974px;
+  margin:15px auto;
+  }
+#page2 {
+  background:#fff;
+  float:left;
+  width:950px;
+  padding:10px;
+  border:solid #444;
+  border-width:0 3px 3px 0;
+  font-size:90%;
+  line-height:1.5;
+  color:#566;
+  }
+
+
+
+/* =Headings
+----------------------------------------------- */
+h2 {
+  margin:.75em 0 0;
+  font-size:150%;
+  }
+h3 {
+  font-size:100%;
+  margin:1em 0 0;
+  color:#233;
+  }
+
+
+/* =Lists
+----------------------------------------------- */
+ul {
+  margin:0 0 1em;
+  padding:0;
+  list-style:none;
+  }
+li {
+  background:url("/img/bullet.gif") no-repeat 4px 50%;
+  margin:0;
+  padding:0 0 0 15px;
+  }
+
+
+/* =Misc
+----------------------------------------------- */
+p {
+  margin: 0 0 0 0;
+  padding: 0 15px 5px 0;
+  line-height: 1.2em;
+  text-align: justify;
+  }
+p.btn {
+  clear:left;
+  background:url("/img/bg-featured.gif") repeat 0 0;
+  margin:0;
+  padding:8px;
+  }
+p.btn img {
+  display:block;
+  margin:0 auto;
+  }
+.unit {
+  white-space:nowrap;
+  }
+
+
+/* =Header
+----------------------------------------------- */
+#header {
+  background:#ddd url("/img/bg-hdr.jpg") repeat-x 0 0;
+  float:left;
+  width:950px;
+  height:110px;
+  padding:10px 0 0;
+  }
+#logo {
+  float:left;
+  display:block;
+  width:162px;
+  text-decoration:none;
+  margin: 8px 8px;
+  }
+#logo img {
+  display:block;
+  }
+#login {
+  float:right;
+  display:block;
+  width:180px;
+  margin:0;
+  padding:0 10px;
+  font-style:normal;
+  }
+#login label img {
+  display:block;
+  margin-bottom:2px;
+  }
+#searchtext {
+  float:left;
+  width:130px;
+  border:1px solid;
+  border-color:#999 #fff #fff #999;
+  }
+#login #username, #password {
+  font-size: 10px;
+  height: 11px;
+  }
+#login div, input.btn {
+  float:right;
+  }
+
+
+/* =Nav
+----------------------------------------------- */
+#nav {
+  background:#135 url("/img/bg-nav.jpg") repeat-x 0 0;
+  float:left;
+  width:950px;
+  margin:0;
+  padding:0;
+  border-bottom:2px solid #135;
+  list-style:none;
+  }
+#nav li {
+  background:none;
+  display:inline;
+  padding:0;
+  }
+#nav li a, #nav li strong {
+  float:left;
+  width:auto;
+  padding:5px 9px 4px;
+  border-left:1px solid #579;
+  border-right:1px solid #135;
+  color:#def;
+  text-transform:lowercase;
+  text-decoration:none;
+  font-weight:normal;
+  }
+#nav li strong {
+  background:#246;
+  color:#fff;
+  font-weight:bold;
+  }
+#nav li a strong {
+  padding:0;
+  border-width:0;
+  }
+#nav li a:hover {
+  background:#246;
+  border-left-color:#246;
+  color: #FF0;
+  }
+
+
+/* =H1
+----------------------------------------------- */
+h1 {
+  background-color:#7BADE0;
+  float:left;
+  width:950px;
+  height:104px;
+  margin:0 0 10px;
+  border-bottom:6px solid #357;
+  }
+h1 img {
+  display:block;
+  }
+
+
+/* =Content
+----------------------------------------------- */
+#content {
+  background:url("/img/bg-content.gif") repeat-y left top;
+  float:left;
+  width:950px;
+  margin:0 0 10px;
+  }
+#content-main {
+  float:right;
+  width:745px;
+  height:570px;
+  }
+#content-sub {
+  float:left;
+  width:190px;
+  }
+  
+
+/* =MainCol Content
+----------------------------------------------- */
+h2 {
+  float:left;
+  display:inline;
+  margin:0 .15em 0 0;
+  font-family:"Lucida Grande",LucidaGrande,Verdana,Sans-serif;
+  font-weight:normal;
+  font-size:185%;
+  line-height:1.3em;
+  letter-spacing:-1px;
+  color:#122;
+  }
+p#intro {
+  margin:0;
+  font-family:"Lucida Grande",LucidaGrande,Verdana,Sans-serif;
+  font-weight:normal;
+  font-size:185%;
+  line-height:1.3em;
+  letter-spacing:-1px;
+  color:#899;
+  }
+
+
+/* =Featured Homes
+----------------------------------------------- */
+ul.featured {
+  float:left;
+  width:100%;
+  margin:1em 0 5px;
+  padding:0;
+  border-top:1px solid #cf6;
+  }
+ul.featured li {
+  background:url("img/bg-featured.gif") repeat 0 0;
+  float:left;
+  width:100%;
+  margin:5px 0 0;
+  padding:8px 0;
+  line-height:1.4em;
+  }
+.homephoto {
+  float:left;
+  width:225px;
+  padding:0 8px;
+  }
+.homephoto img {
+  display:block;
+  }
+.propname, .desc, .price, .detailslink {
+  margin:0 0 0 81px;
+  }
+.propname {
+  display:block;
+  color:#000;
+  }
+.price {
+  font-weight:bold;
+  }
+.price em {
+  font-style:normal;
+  color:#344;
+  }
+.detailslink a {
+  background:url("/img/arrow.gif") no-repeat 100% 60%;
+  padding-right:6px;
+  }
+
+
+/* =Footer
+----------------------------------------------- */
+#footer {
+  float:left;
+  width:100%;
+  border-top:6px solid #000;
+  }
+#footer hr {
+  display:none;
+  }
+#footer p {
+  background: #009;
+  margin:0;
+  padding:10px;
+  text-align:center;
+  color:#fff;
+  }
+
+
+/* =Subnav
+----------------------------------------------- */
+.subnav h3 {
+  background:#009; url("/img/bg-subnav-hdr.jpg") repeat-x 0 0;
+  margin:0;
+  padding:4px 9px 3px;
+  border-bottom:1px solid #9c0;
+  text-transform:lowercase;
+  color:white;
+  }
+.subnav ul {
+  padding-top:5px;
+  }
+.subnav li {
+  background:none;
+  width:190px;
+  padding:0;
+  }
+.subnav li a {
+  background:url("/img/bullet.gif") no-repeat 10px 50%;
+  display:block;
+  width:158px;
+  padding:3px 10px 3px 21px;
+  text-decoration:none;
+  color:#357;
+  }
+.subnav li a:hover {
+  background-color:#fff;
+  }
+.subnav p {
+  padding:0 10px;
+  color:#677;
+  }
+
+
+/* =Variations (default is SMX)
+----------------------------------------------- */
+.mxs #content {background-position:right top;}
+.mxs #content-group {float:left;}
+.mxs #content-sub {float:right;}
+
+.xms #content {background-position:right top;}
+.xms #content-group {float:left;}
+.xms #content-sub {float:right;}
+.xms #content-main {float:right;}
+.xms #content-extra {float:left;}
+
+.ms #content {background-position:right top;}
+.ms #content-group {float:left;}
+.ms #content-main {width:745px; margin-bottom:15px;}
+.ms #content-sub {float:right;}
+.ms #content-extra {width:745px; display:none;}
+
+.sm #content-main {width:745px; margin-bottom:15px;}
+.sm #content-extra {width:745px; display:none;}
+
+.m #content {background-image:none;}
+.m #content-group {width:950px;}
+.m #content-main {width:950px;}
+.m #content-sub {width:950px; display:none;}
+.m #content-extra {width:950px; display:none;}

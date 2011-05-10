@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Settings Database</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+    
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css" />
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css" />
+    
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js"></script>
+
+    <style type="text/css" media="screen">
+        body {
+        	background: #87A0A9;
+        	margin: 0px;
+        	padding: 30px;
+        	font-family: sans-serif;
+        	font-size: 90%;
+        }
+        #page {
+        	width: 754px;
+        	margin: 0 auto;
+        }
+        #page2 {
+        	width: 730px;
+        	padding: 12px;
+        	float: left;
+        	background-color: white;
+        }
+        #header {
+        	width: 730px;
+        	float: left;
+        	color: white;
+        	background-color: darkblue;
+        }
+        #col1 {
+        	height: 400px;
+        	width:500px;
+        	margin: 20px 0 0 20px;
+        	float:left;
+        }
+        #col2 {
+        	width:200px;
+        	margin: 20px 0 0 0;
+        	float:right;
+        	height:100%;
+        }
+        #footer {
+        	width: 730px;
+        	padding: 10px 0 10px 0;
+        	float: left;
+        	text-align: center;
+        	background-color: darkblue;
+        	color: white;
+        	font-size: x-small;
+        }
+        h1 {
+        	font-family: verdana, sans-serif;
+        	text-align: center;
+        }
+        #wntable {
+            height: 380px;
+            overflow: auto;
+            font-size: 80%;
+        }
+        #pattern, #filterselector, #limitselector {
+            font-size: 80%;
+            width: 190px;
+            margin: 0 0 0 0;
+        }
+        #filterselector {
+            width: 120px;
+        }
+        #limitselector {
+            width: 55px;
+        }
+        .smalllabel {
+            font-size: 9px;
+            color: gray;
+        }
+        #first-button, #next-button, #previous-button {
+            font-size: 70%;
+        }
+        #counter {
+            text-align: center;
+            height: 50px;
+            padding: 30px 0 20px 0;
+            font-size: 12px;
+        }
+        p {
+            font-size: small;
+            border: dashed black 1px;
+            margin: 10px 8px 0 3px;
+            padding: 5px;
+            color: gray;
+            text-align: justify;
+            line-height: 1.1em;
+        }
+    </style>
+
+    <script type="text/javascript">
+        YAHOO.util.Event.addListener(window, "load", function() {
+            var pattern = "logic*";
+            var type = "_";
+            var cursor = 1;
+            var limit = parseInt(document.getElementById("limitselector").value);
+            var formatWordform = function(elCell, oRecord, oColumn, sData) {
+                elCell.innerHTML = sData;
+            };
+            var formatType = function(elCell, oRecord, oColumn, sData) {
+                elCell.innerHTML = sData.split("#")[1];
+            };
+            var formatGloss = function(elCell, oRecord, oColumn, sData) {
+                elCell.innerHTML = sData.slice(1,-1) ;
+            };
+            var myColumnDefs = [
+                {key:"Module", label:"Word form", sortable:true, formatter:formatWordform},
+                {key:"Setting", label:"Part of speech", sortable:true, formatter:formatType},
+                {key:"Gloss", label:"Word sense gloss", formatter:formatGloss}
+            ];
+
+            var myDataSource = new YAHOO.util.DataSource("/swapp/admin/settings");
+            myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+            myDataSource.connXhrMode = "queueRequests";
+            myDataSource.responseSchema = {
+                resultsList: "bindings",
+                fields: ["WordForm","Type", "Gloss"]
+            };
+
+            var myDataTable = new YAHOO.widget.DataTable("wntable", myColumnDefs,
+                    myDataSource, {initialRequest:""});
+
+            var myCallback = function() {
+                var hits = "Hits " + (cursor + 1) + "-" + (cursor + limit);
+                document.getElementById("counter").innerHTML = hits;
+                myDataTable.set("sortedBy", null);
+                myDataTable.onDataReturnAppendRows.apply(myDataTable, arguments);
+                document.getElementById("wntable").style.display = "block";
+            };
+            var handleClick = function(o) {
+                pattern = document.getElementById("pattern").value;
+                type = document.getElementById("filterselector").value;
+                limit = parseInt(document.getElementById("limitselector").value);
+                document.getElementById("wntable").style.display = "none";
+                if (o.target.id == "first-button") {
+                    cursor = 0;
+                } else if (o.target.id == "next-button") {
+                    cursor = cursor + limit;
+                } else if (o.target.id == "previous-button") {
+                    cursor = cursor - limit;
+                }
+                myDataTable.deleteRows(0,myDataTable.getRecordSet().getLength());
+                myDataSource.sendRequest("?query=rdf(S,wn:wordForm,literal(like('" + pattern +"'),WordForm)),rdf(S,rdf:type,Type), Type=" + type + ", rdf(S,wn:g,literal(Gloss))&cursor="+cursor+"&limit=" + limit, {
+                    success : myCallback,
+                    failure : myCallback,
+                    scope : this.myDataTable
+                });
+            }
+                
+            var firstbtn = new YAHOO.widget.Button("first"); 
+            firstbtn.on("click", handleClick); 
+            
+            var nextbtn = new YAHOO.widget.Button("next"); 
+            nextbtn.on("click", handleClick); 
+            
+            var previousbtn = new YAHOO.widget.Button("previous"); 
+            previousbtn.on("click", handleClick); 
+        });
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+  <div id="page"><div id="page2">
+    <div id="header">
+        <h1>WordNet Tabling</h1> 
+    </div>
+    <div id="col1">
+        <div id="wntable"></div>
+    </div>
+    <div id="col2">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <span class="smalllabel">WORD-FORM PATTERN (* is allowed)</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input id="pattern" type="text" size="10" value="logic*">
+                </td>
+            </tr>
+            <tr>
+                <td valign="bottom">
+                    <span class="smalllabel">PART-OF-SPEECH FILTER</span>
+                </td>
+                <td>
+                    <span class="smalllabel">LIMIT</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="filterselector">
+                        <option value="_">No filter</option>
+                        <option value="wn:'Noun'">Noun</option>
+                        <option value="wn:'Verb'">Verb</option>
+                        <option value="wn:'Adjective'">Adjective</option>
+                        <option value="wn:'Adverb'">Adverb</option>
+                        <option value="wn:'AdjectiveSatellite'">AdjectiveSatellite</option>
+                    </select>
+                </td>
+                <td>           
+                    <select id="limitselector">
+                        <option value="10" selected="selected"> 10</option>
+                        <option value="20"> 20</option>
+                        <option value="50"> 50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span class="smalllabel">PAGING</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <center>
+                        <button id="first">First</button><button id="next">Next</button><button id="previous">Previous</button>
+                    </center>
+                </td>
+            </tr>
+            <tr>
+                <td id="counter" valign="center" colspan="2">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>
+                        <b>About: </b>
+                        This is a simple GUI to WordNet allowing a user to search for word forms using 
+                        a *-pattern and an optional filter on part of speech. Note that paging using 
+                        the Next button always is as efficient as can be, since the Prolog cache kicks
+                        in. Using the Previous button may be slower.
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="footer">
+        Last updated on 1/11, 2009
+    </div>
+  </div>
+</div>
+		
+</body>
+</html>

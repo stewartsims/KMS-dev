@@ -1,0 +1,23 @@
+/*
+ * Simple hello world application
+ */
+
+:- dynamic ka_token/0.
+
+ka_token.
+
+hello_meta( 1, ['HelloIn','HelloOut'] ).
+hello(HelloIn, HelloOut) :-
+	HelloIn = 'hello?' -> HelloOut = 'hello, world!'; fail.
+
+
+% Procedure which uses the data transport facilities to retrieve data from
+% an external web service.
+
+helloTransport_meta( 1, ['Name','Response'] ).
+helloTransport(Name, Response) :-
+
+	% see SWAPP-KMS/api/transport for more useful API features
+	% for data retrieval (e.g. sending and receiving more complex data)
+
+	transport:request( 'HelloTransport', Name, Response ).

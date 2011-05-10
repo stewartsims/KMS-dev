@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://localhost:8080/" xmlns:tns="http://localhost:8080/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="createKA" type="tns:createKA"/>
+
+  <xs:element name="createKAResponse" type="tns:createKAResponse"/>
+
+  <xs:element name="exportKA" type="tns:exportKA"/>
+
+  <xs:element name="exportKAResponse" type="tns:exportKAResponse"/>
+
+  <xs:element name="modifyKA" type="tns:modifyKA"/>
+
+  <xs:element name="modifyKAResponse" type="tns:modifyKAResponse"/>
+
+  <xs:element name="removeKA" type="tns:removeKA"/>
+
+  <xs:element name="removeKAResponse" type="tns:removeKAResponse"/>
+
+  <xs:complexType name="removeKA">
+    <xs:sequence>
+      <xs:element name="kaIdentifier" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="removeKAResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="exportKA">
+    <xs:sequence>
+      <xs:element name="kaIdentifier" type="xs:string" minOccurs="0"/>
+      <xs:element name="format" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="exportKAResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="modifyKA">
+    <xs:sequence>
+      <xs:element name="kaIdentifier" type="xs:string" minOccurs="0"/>
+      <xs:element name="logic" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="modifyKAResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createKA">
+    <xs:sequence>
+      <xs:element name="kaIdentifier" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createKAResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

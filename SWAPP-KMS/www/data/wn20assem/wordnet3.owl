@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY dc   "http://purl.org/dc/elements/1.1/">
+    <!ENTITY owl  "http://www.w3.org/2002/07/owl#">
+    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+    <!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
+    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#">
+    <!ENTITY wn   "http://www.cogsci.princeton.edu/~wn#">
+]>
+<rdf:RDF
+    xmlns     ="&wn;"
+    xml:base  ="http://www.cogsci.princeton.edu/~wn"
+    xmlns:dc  ="&dc;"
+    xmlns:owl ="&owl;"
+    xmlns:rdf ="&rdf;"
+    xmlns:rdfs="&rdfs;"
+    xmlns:skos="&skos;"
+    xmlns:wn  ="&wn;"
+>
+
+    <!-- Class descriptions -->
+
+    <rdfs:Description rdf:about="#SynSet">
+        <rdfs:subClassOf rdf:resource="&skos;Concept" />
+    </rdfs:Description>
+
+    <!-- Properties of SynSet -->
+
+    <rdf:Description rdf:about="#g">
+        <rdfs:subPropertyOf rdf:resource="&skos;scopeNote" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#hyp">
+        <rdfs:subPropertyOf rdf:resource="&skos;broader" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#hypernymOf">
+        <rdfs:subPropertyOf rdf:resource="&skos;narrower" />
+    </rdf:Description>
+
+    <!-- Properties of Noun -->
+
+    <rdf:Description rdf:about="#mm">
+        <rdfs:subPropertyOf rdf:resource="&skos;broaderPartitive" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#memberHolonymOf">
+        <rdfs:subPropertyOf rdf:resource="&skos;narrowerPartitive" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#ms">
+        <rdfs:subPropertyOf rdf:resource="&skos;broaderPartitive" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#substanceHolonymOf">
+        <rdfs:subPropertyOf rdf:resource="&skos;narrowerPartitive" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#mp">
+        <rdfs:subPropertyOf rdf:resource="&skos;broaderPartitive" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#partHolonymOf">
+        <rdfs:subPropertyOf rdf:resource="&skos;narrowerPartitive" />
+    </rdf:Description>
+
+    <!-- Properties of Verb -->
+
+    <rdf:Description rdf:about="#ent">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#cs">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#vgp">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <!-- Properties of Adjective -->
+
+    <rdf:Description rdf:about="#sim">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <!-- Properties of Noun -->
+
+    <rdf:Description rdf:about="#at">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <!-- Properties of SynSetWord -->
+
+    <rdf:Description rdf:about="#der">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#ant">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#sa">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#per">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+    <!-- Properties of AdjectiveWord -->
+
+    <rdf:Description rdf:about="#ppl">
+        <rdfs:subPropertyOf rdf:resource="&skos;related" />
+    </rdf:Description>
+
+</rdf:RDF>
+

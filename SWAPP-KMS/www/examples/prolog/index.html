@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>SWI-Prolog Online</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+	
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+
+    <script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+    
+    <script src="http://yui.yahooapis.com/2.7.0/build/event/event-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+
+
+    <style type="text/css" media="screen">  
+        body {
+        	background: #87A0A9;
+        	margin:0px;
+        	padding:30px;
+        	font-family:sans-serif;
+        	font-size:90%;
+        }
+        #page {
+        	width:754px;
+        	margin:0 auto;
+        }
+        #page2 {
+        	width:730px;
+        	padding:12px;
+        	float:left;
+        	background-color:white;
+        }
+        #header {
+        	width:730px;
+        	float:left;
+        	color:white;
+        	background-color: #C00000;
+        }
+        #col1 {
+        	width:495px;
+        	height: 390px;
+        	margin: 10px 5px;
+			border: solid black 1px;
+			padding: 4px;
+        	float:left;
+        }
+        #col2 {
+        	width: 195px;
+        	height: 390px;
+        	margin: 10px 5px;
+			padding: 4px;
+			border: dashed black 1px;
+        	float: right;
+        }
+        #footer {
+        	width: 730px;
+        	padding: 10px 0 10px 0;
+        	float:left;
+        	text-align: center;
+        	background-color: #C00000;
+        	color:white;
+        	font-size: x-small;
+        }
+        h1 {
+        	font-family: ariel, sans-serif;
+        	font-size: 32px;
+        	text-align: center;
+        }
+		input {
+			border: none;
+			outline: 0 none;
+		}
+		p {
+			font-size: 12px;
+			margin: 0;
+			padding: 3px;
+			color: gray;
+			text-align: justify;
+			line-height: 1.1em;
+		}
+		code {
+		    display: block;
+		    margin: 3px 0 3px 0;
+			font-size: 11px;
+			text-align: left;
+			color: maroon;
+		}
+		#messages {
+			font-family: monospace;
+			font-size: 12px;
+			max-height: 340px;
+			width: 495px;
+			overflow: hidden;
+			border: none;
+		}
+		.msg {
+		    line-height: 15px;
+		}
+		.goal {
+		    margin-top: 12px;
+		}
+		#prompt, #query {
+			font-family: monospace;
+			line-height: 14px;
+			font-size: 12px;
+			margin: 12px 0 0 0;
+			width: 470px;
+		}
+    </style>
+
+    <script type="text/javascript">
+		var goal;
+		var session = 0;
+		var cursor = 0;
+		var histList = [];
+		var histPos = 0;
+		var kl0 = new YAHOO.util.KeyListener(document, { keys:13 }, {fn:getFirst } );
+		var kl1 = new YAHOO.util.KeyListener(document, { shift:true, keys:[59,186] }, {fn:getNext });
+		var kl2 = new YAHOO.util.KeyListener(document, { keys:13 }, {fn:stop} );
+		var kl3 = new YAHOO.util.KeyListener(document, { keys:[38,40] }, {fn:navigateHistList} );
+		kl3.enable();	
+		function getSelection(element) {
+			if (document.selection && document.selection.createRange) {
+				var range = document.selection.createRange();
+				var stored = range.duplicate();
+				stored.moveToElementText(element);
+				stored.setEndPoint("EndToEnd", range);
+				element.selectionStart = stored.text.length - range.text.length;
+				element.selectionEnd = element.selectionStart + range.text.length;
+			}
+			return [element.selectionStart, element.selectionEnd];
+		}
+		function setSelection(element, range) {
+			element.focus();
+			element.selectionStart = range[0];
+			element.selectionEnd = range[1];
+			if (document.selection && document.selection.createRange) {
+				var range = document.selection.createRange();
+				range.moveStart("character", element.selectionStart);
+				range.moveEnd("character", element.selectionEnd - element.selectionStart);
+				range.select();
+			}
+		}
+		function keepFocus(event) {
+		    if (document.getElementById("c")) {
+		        document.getElementById("c").focus();
+		    } else {
+		        document.getElementById("query").focus();
+		    }
+		}
+		function navigateHistList(a, b) {
+		    var element = document.getElementById("query");
+			if (b[0] == 38) {
+				selectFromHistory(element, true);
+			} else {
+				selectFromHistory(element, false);
+			}
+		}
+		function selectFromHistory(element, up) {
+			if (up) {
+				if (histList[histPos]) {
+					element.value = histList[histPos];
+					var caretPos = histList[histPos].length;
+                     setTimeout(function() {
+                         setSelection(element, [caretPos,caretPos]);
+					}, 0);
+				}
+				if (histPos > 0) {
+					histPos--;
+				}
+			} else { //down
+				if (histPos < histList.length-1) {
+					histPos++;
+					element.value = histList[histPos];
+					var caretPos = histList[histPos].length;
+					setSelection(element, [caretPos,caretPos]);
+				} else {
+					element.value = "";
+				}
+			}
+		}
+		function addmsg(msg, tag) {
+			var div = document.getElementById("messages");
+			var html = "<div class='" + tag + "'>" + msg +"</div>";
+			div.innerHTML += html;
+			div.scrollTop = div.scrollHeight;
+		}
+		function addmsgask(msg) {
+			var div = document.getElementById("messages");
+			var html = "<div class='msg'>" + msg +" <span id='" + session + cursor + "' ><input id='c' type='text' size=1></input></span></div>";
+			div.innerHTML += html;
+			div.scrollTop = div.scrollHeight;
+			document.getElementById("c").focus();
+			kl1.enable();
+			kl2.enable();
+		}
+		function getFirst() {  
+		    goal = document.getElementById("query").value;
+			if (goal) {
+			    for (var i in histList) {
+			        if (histList[i] == goal) {
+			            histList.splice(i,1);
+			        }
+			    }
+				histList.push(goal);
+				histPos = histList.length-1;
+				cursor = 0;
+				addmsg("?-&nbsp;" + goal, "goal");
+				hidePrompt();
+				YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=" + encodeURIComponent(goal) + "&cursor=" + cursor + "&output=json-s", {
+					success: update
+				});
+			} else {
+			    addmsg("?-", "goal");
+			}
+		}
+		function getNext() {
+			document.getElementById(session + cursor.toString()).innerHTML = ";";
+			cursor = cursor + 1;
+			kl1.disable();
+			kl2.disable();
+			YAHOO.util.Connect.asyncRequest('GET', "/swapp/session/db?query=" + encodeURIComponent(goal) + "&cursor=" + cursor + "&output=json-s", {
+				success: update
+			});
+		}
+		function showPrompt() {
+			kl0.enable();
+			document.getElementById("prompt").innerHTML = "?-&nbsp;";
+			document.getElementById("query").focus();
+		}
+		function hidePrompt() {
+			kl0.disable();
+			document.getElementById("prompt").innerHTML = "";
+			document.getElementById("query").value = "";
+		}
+		function stop() {
+			kl1.disable();
+			kl2.disable();
+			document.getElementById(session + cursor.toString()).innerHTML = ".";
+			session = session + 1;
+			showPrompt();
+		}
+		function isEmpty(obj) {
+			// trick to check for empty object
+			for(var i in obj){ return false;}
+			return true;
+		}
+		function update(o) {
+			var response = YAHOO.lang.JSON.parse(o.responseText);
+			if (response.success) {
+				var bindings = response.bindings[0];
+				var html = "";
+				if (!isEmpty(bindings)) {
+    				for (var i in bindings) {
+    				   if (typeof bindings[i] == "object") {
+    				   	html += i + " = [" + bindings[i] + "]<br>";
+    				   } else {
+    				   	html += i + " = " + bindings[i] + "<br>";
+    				   }
+    				}
+    				html = html.slice(0,-4)
+                } else {
+                    html = "true."
+                }
+                if (!isEmpty(bindings) && response.more) {
+					addmsgask(html);
+                } else {
+					addmsg(html, "msg");
+					session = session + 1;
+					showPrompt();
+				}
+			} else if (response.error) {
+				addmsg(response.message, "msg");
+				session = session + 1;
+                showPrompt();
+			} else {
+                addmsg("false.", "msg");
+				session = session + 1;
+			    showPrompt();
+			}
+		}
+		YAHOO.util.Event.onDOMReady(function() {
+			showPrompt();   
+		});
+				
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page"><div id="page2">
+    <div id="header">
+		<h1>SWI-Prolog Online</h1> 
+    </div>
+    <div id="col1" onclick="keepFocus(event)">
+		<div id="messages">
+Welcome to SWI-Prolog (Multi-threaded, 32 bits, Version 5.8.0)<br>
+Copyright (c) 1990-2009 University of Amsterdam.<br>
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+Please visit http://www.swi-prolog.org for details.
+		</div>
+		<span id="prompt">?-&nbsp;</span><input id='query' name="query" value="">
+    </div>
+    <div id="col2">
+		<p>
+			<b>About: </b>
+            This is your web browser talking to SWI-Prolog running on a server. We have tried to support predicates that make sense to run in a browser and that cannot do any harm on the server side. You may want to try queries such as
+            <code>
+            ?- member(X, [1,2,3]).
+            </code>
+            <code>
+            ?- append(Xs, Ys, [a,b,c]).
+            </code>
+            <code>
+            ?- assert(q(a)).
+            </code>
+            <code>
+            ?- assert((p(X) :- q(X))).
+            </code>
+            <code>
+            ?- findall(X, p(X), Xs).
+            </code>
+		</p>
+		<p>
+            but many others work too. To determine if a particular predicate is supported, call:
+            <code>
+            ?- swapp_predicate(P).
+            </code>
+		</p>
+		<p>
+            Wordnet is loaded into the RDF database, so you could also try queries such as:
+            <code>
+            ?- rdf(S, P, O).
+            </code>
+            <code>
+            ?- rdf(S, wn:wordForm, O).
+            </code>
+		</p>
+    </div>
+    <div id="footer">
+	 Last updated on 7/11, 2009
+    </div>
+  </div>
+</div>
+		
+</body>
+</html>

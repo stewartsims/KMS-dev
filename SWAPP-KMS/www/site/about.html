@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>
+            SWAPP
+        </title>
+        <link rel="stylesheet" type="text/css" media="screen,projection" href="assets/swapp.css" />
+        <style type="text/css">
+            p {
+                font-size: 13px;
+            }
+            li.lst {
+                width: 340px;
+                margin-left: 20px;
+                padding-right: 2px;
+                list-style: square; 
+                padding-left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            <div id="page2">
+                <div id="header">
+                    <div id="logo">
+                        <img src="assets/logo.png" alt="SWAPP" />
+                    </div>
+                    <form id="login" action="/">
+                        <div>
+                            <input class="text" size="10" id="username" type="text" />
+                            <br />
+                            <input class="text" size="10" id="password" type="password" />
+                            <br />
+                            <input src="assets/login.gif" alt="Login" class="btn" type="image" />
+                        </div>
+                    </form>
+                </div>
+                <ul id="nav">
+                    <li>
+                        <a href="home.html">Home</a>
+                    </li>
+                    <li>
+                        <strong>About</strong>
+                    </li>
+                    <li>
+                        <a href="documentation.html">Documentation</a>
+                    </li>
+                    <li>
+                        <a href="demo.html">Demo</a>
+                    </li>
+                    <li>
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li>
+                        <a href="development.html">Development</a>
+                    </li>
+                    <li>
+                        <a href="support.html">Support</a>
+                    </li>
+                </ul>
+                <h1>
+                    <img src="assets/banner.jpg" alt="Banner" height="110" width="950" />
+                </h1>
+                <div id="content">
+                    <div id="content-group">
+                        <div id="content-main">
+                            <h2>
+                                Prolog <i>in</i> and JSON <i>out</i>
+                            </h2>
+                            <p id="intro">
+                                <br />
+                            </p>
+                            <p style="margin:5px 0 10px 0;font-weight:bold;font-size:14px;">
+                                The <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a> programming language plays no less than four different roles in SWAPP: as a query language, as a rule language, as a server-side web application programming language, and as the language in which the platform as a whole is implemented. But when SWAPP talks back to clients, only <a href="http://json.org">JavaScript Object Notation</a> (JSON) is used.
+                            </p>
+                            <div style="width:365px;float:left;border-right:solid black 1px;">
+                                <p>
+                                    Prolog has a number of traits that distinguishes it from most other programming languages:
+                                </p>
+                                <ul>
+                                    <li class="lst">
+                                        Declarativeness, inherited from its roots in logic
+                                    </li>
+                                    <li class="lst">
+                                        Inference capabilities, from its roots in theorem proving
+                                    </li>
+                                    <li class="lst">
+                                        A-tuple-at-a-time generation of solutions to queries
+                                    </li>
+                                    <li class="lst">
+                                        No separation between data and programs (reflectivity)
+                                    </li>
+                                    <li class="lst">
+                                        Only one kind of simple datastructure &ndash; <i>terms</i>
+                                    </li>
+                                </ul>
+                                <p>
+                                    Its declarative nature and its inference capabilities places Prolog closer to the Semantic Web than most other general programming languages. RDF graphs may be queried through Prolog queries formally equivalent to SPARQL. Rules increase the expressiveness and serves as a bridge to future Semantic Web technologies. But Prolog is also a general programming language, which implies that the interaction between queries and application code becomes seamless, something which tends to be import&shy;ant in practice.
+                                </p>
+                                <p>
+                                    The a-tuple-at-a-time generation of solutions comes in handy when we prefer to generate the solutions one-by-one, perhaps for reasons of memory require&shy;ments (on server and/or client), or perhaps just because we want to be able to decide, after having seen the first couple of solutions, whether we want to see more.
+                                </p>
+                            </div>
+                            <div style="width:365px;float:right">
+                                <p>
+                                    Reflectivity is the key to safety. Providing access to a general programming language over the web could be dangerous. Reflectivity means that we can easily inspect programs and queries before running them, denying attempts to execute code that might jeopardize the integrity of the server. Since terms &ndash; the only kind of datastructures available in Prolog &ndash; are so simple, this is done with less effort than in most other languages.
+                                </p>
+                                <p>
+                                    Our approach to remote procedure call (RPC) also employs the reflective capabilities of the Prolog language to invoke procedures remotely. This simplifies the programming model since a procedure does not have to be declared in any way to receive remote calls. As long as calls are safe and clients are authorized, remote procedure calls will execute just as easily as queries, and there is no essential difference whatsoever.
+                                </p>
+                                <p>
+                                    The results of queries and events coming from the systems, while terms on the server-side, are converted into JSON before being returned to the client.  
+                                </p>
+                            </div>
+                            <div style="float:left;width:100%;">
+                                <p style="margin-top:15px;text-align:center;">For more detailed information, see the <a href="paper.pdf">paper</a> and the <a href="documentation.html">documentation</a> page.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="content-sub">
+                        <div class="subnav">
+                            <h3>
+                                Administration
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">Users</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">Statistics</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="subnav">
+                            <h3>
+                                API Explorers
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/login/index.html">/swapp/login</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/admin/index.html">/swapp/admin/*</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">/swapp/rdf/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">/swapp/session/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">/swapp/session/eq</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <hr />
+                    <p>
+                        &#xA9; Copyright 2009 Torbj&#xF6;rn Lager and Jan Wielemaker
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

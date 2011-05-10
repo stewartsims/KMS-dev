@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>WordNet Search</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Torbjörn Lager">
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css">
+    <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/autocomplete/assets/skins/sam/autocomplete.css"> 
+    
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/autocomplete/autocomplete-min.js"></script>
+
+    <style type="text/css" media="screen">
+        body {
+			background: #87A0A9;
+			margin: 0px;
+			padding: 30px;
+			font-family: sans-serif;
+			font-size: 12px;
+        }
+        #page {
+			width: 754px;
+			margin: 0 auto;
+        }
+        #page2 {
+			width: 730px;
+			padding: 12px;
+			float: left;
+			background-color: white;
+        }
+        #header {
+			width: 728px;
+			float: left;
+			color: #F2D888;
+			border: solid black 2px;
+			background-color: #1C2C08;
+        }
+        #col1 {
+			width: 500px;
+			height: 380px;
+			margin: 20px 0 0 0px;
+			float: left;
+        }
+        #col2 {
+        	width: 195px;
+        	height: 380px;
+        	margin: 10px 5px;
+			padding: 4px;
+			border: solid black 1px;
+        	float: right;
+        }
+        #footer {
+			width: 728px;
+			border: solid black 2px;
+			padding: 10px 0 10px 0;
+			float: left;
+			text-align: center;
+			background-color: #1C2C08;
+			color: #F2D888;
+			font-size: x-small;
+        }
+        label {
+            color: #731007;
+            font-weight: bold;
+        }
+        #wnsearch { 
+            text-align: center;
+            margin-top: 3px;
+        }
+        #wnsearchinput {
+            position: static;
+            width: 250px;
+            margin-left: 3px;
+            padding: 1px;
+    
+        }
+        #wnsearchcontainer {
+            text-align: right;
+            width: 250px;
+        } 
+        .word {
+            padding-left: 3px;
+            float: left;
+        }
+        .count {
+            padding-right: 3px;
+            color: green;    
+        }
+        h1 {
+            font-family: Verdana;
+            text-align: center;
+            font-size: 28px;
+        }
+		p.about {
+			font-size: 12px;
+			margin: 0;
+			padding: 3px;
+			color: gray;
+			text-align: justify;
+			line-height: 1.1em;
+		}
+		ul {
+		    font-size: 12px;
+			color: gray;
+            margin: 2px 0 2px 15px;
+            padding: 0;
+            list-style: none;
+		}
+        a {
+            text-decoration: underline;
+            color: #731007;
+            cursor: pointer;
+        }
+        #table {
+            text-align: center;
+            position: static;
+            width: 510px;
+            margin: 20px auto 0 auto;
+        }
+        .table {
+            width: 510px;
+            height: 330px;
+            overflow: auto;
+            text-align: left;
+        
+        }
+        .entry {
+            padding: 5px;
+            border: dashed black 1px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function createAutocomplete() {
+            var myDataSource = new YAHOO.util.XHRDataSource("/swapp/rdf/db");
+            myDataSource.responseSchema = {
+                resultsList: "bindings",
+                fields: ["WordForm","N"]
+            };
+            var myAutoComp = new YAHOO.widget.AutoComplete("wnsearchinput", "wnsearchcontainer", myDataSource);
+            myAutoComp.queryMatchContains = true;
+        	myAutoComp.autoHighlight = false; 
+            myAutoComp.maxResultsDisplayed = 10;
+            myAutoComp.generateRequest = function(str) {
+                return "?query=bagof(S, rdf(S,wn:wordForm,literal(prefix('" + str +"'),WordForm)), L), length(L, N)&limit=10";
+            };
+            myAutoComp.resultTypeList = false;
+            myAutoComp.formatResult = function(oResultData, sQuery, sResultMatch) {
+                var sMarkup = "<span class='word'>" + oResultData.WordForm + "</span><span class='count'>" + oResultData.N + " senses</span>"; 
+                return sMarkup;
+            };
+            myAutoComp.itemSelectEvent.subscribe(function(sType, aArgs) { 
+                searchWord(aArgs[2].WordForm); 
+            }); 
+        };
+        function searchWord(word) {
+            YAHOO.util.Connect.asyncRequest('GET', "/swapp/rdf/db?query=" + encodeURIComponent("rdf(S, wn:wordForm, literal('" + word +"')), rdf(S,rdf:type,Type), rdf(S, wn:g, literal(Gloss)), findall(W,(rdf(S, wn:wordForm, literal(W)), W \\== " + word +"), Syns), findall(W,(rdf(S, wn:hyp, S1), rdf(S1, wn:wordForm, literal(W))), Hyperonyms), findall(W,(rdf(S1, wn:hyp, S), rdf(S1, wn:wordForm, literal(W))), Hyponyms), rdf(S, wn:g, literal(Gloss))") + "&limit=200", {
+                success: function(o) {
+                    var response = YAHOO.lang.JSON.parse(o.responseText);
+                    addTable(word, response.bindings);
+                }
+            });
+        }    
+        function addTable(word, bindings) {
+            document.getElementById("wnsearchinput").value = word;
+            var table = "<div class='table'>";
+            for (var i in bindings) {
+                table += "<div class='entry'><div><span><b>Sense&nbsp;ID:</b> " + bindings[i].S.split("#")[1] + "</span>, <span><b>Part&nbsp;of&nbsp;speech:</b> " + bindings[i].Type.split("#")[1] + "</span></div>";
+                table += "<div><span><b>Gloss:</b> " + bindings[i].Gloss.slice(1,-1) + "</span></div>";
+                if (bindings[i].Syns.length > 0) {
+                    table += "<div><span><b>Synonyms:</b> ";
+                    for (var j in bindings[i].Syns) {
+                        var syn = bindings[i].Syns[j];
+                        table += "<a onclick='searchWord(\"" + syn + "\");'>" + syn + "</a>; ";
+                    }
+                    table += "</span></div>";
+                }
+                if (bindings[i].Hyperonyms.length > 0) {
+                    table += "<div><span><b>Hyperonyms:</b> ";
+                    for (var j in bindings[i].Hyperonyms) {
+                        var hyperonym = bindings[i].Hyperonyms[j];
+                        table += "<a onclick='searchWord(\"" + hyperonym + "\");'>" + hyperonym + "</a>; ";
+                    }
+                    table += "</span></div>";
+                }
+                if (bindings[i].Hyponyms.length > 0) {
+                    table += "<div><span><b>Hyponyms:</b> ";
+                    for (var j in bindings[i].Hyponyms) {
+                        var hyponym = bindings[i].Hyponyms[j];
+                        table += "<a onclick='searchWord(\"" + hyponym + "\");'>" + hyponym + "</a>; ";
+                    }
+                    table += "</span></div>";
+                }
+                table += "</div>";
+            }
+            table += "</div>";
+            document.getElementById("table").innerHTML = table;
+        }
+        window.onload = function() {
+            createAutocomplete();
+            document.getElementById("wnsearchinput").focus();
+            document.getElementById("wnsearchinput").onkeypress = function(e) {
+                if (e.keyCode == 13) {
+                    searchWord(document.getElementById("wnsearchinput").value);
+                }
+            }
+        }
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+    <div id="page">
+        <div id="page2">
+            <div id="header">
+                <h1>WordNet Search</h1> 
+            </div>
+            <div id="col1">
+                <div class="yui-ac" id="wnsearch">
+                    <label for="wnsearchinput">WORD FORM: </label> 
+            		<input autocomplete="off" class="yui-ac-input" id="wnsearchinput" name="p" type="text">
+            		<button onclick="searchWord(document.getElementById('wnsearchinput').value)">Search</button>
+            		<div class="yui-ac-container" id="wnsearchcontainer"></div>
+                </div>
+            	<div id="table"></div>
+            </div>
+            <div id="col2">
+        		<p class="about">
+        			<b>About: </b>
+        			Yet another GUI to the RDF representation of WordNet, this time featuring autocomplete search showing the number of senses of completed words. In addition, the GUI allows the user to traverse WordNet along its synonym, hyperonym and hyponym axes.
+        		</p>
+            </div>
+            <div id="footer">
+                Author: Torbjörn Lager, WordNet from Princeton University
+            </div>
+        </div>
+    </div>
+</body>
+</html>

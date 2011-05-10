@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Knowledge Management System Transport" default="help" basedir=".">
+	<target name="-params">
+		<!-- Path locations -->
+		<property file="build.properties"/>
+		<property name="path.library" value="../lib"/>
+		<property name="path.temp" value="../temp"/>
+		<property name="path.source" value="${path.temp}_src"/>
+		<property name="path.binary" value="${path.temp}_bin"/>
+		<property name="path.originalsource" value="../src"/>
+		<property name="path.buildclasses" value="../build/classes"/>
+		<property name="path.build" value="../build/"/>
+		
+		<property name="path.webinf" value="../WEB-INF/"/>
+		<property name="name.war" value="KMS-Transport.war"/>
+
+		<property name="path.ejb" value="../ejb"/>
+		<property name="path.ejbjar" value="../ejb/build"/>
+		<property name="path.ear" value="../ear"/>
+		
+		<!-- Version Information -->
+		<property name="versionInfo.productVersion" value="0.1"/>
+		<property name="versionInfo.companyName" value="Stewart Sims"/>
+	</target>
+	<target name="-init" depends="-params">
+		<!-- Delete working folders -->
+		<delete dir="${path.temp}"/>
+		<delete dir="${path.source}"/>
+		<delete dir="${path.binary}"/>
+
+		<!-- Create empty working folders -->
+		<mkdir dir="${path.temp}"/>
+		<mkdir dir="${path.source}"/>
+		<mkdir dir="${path.binary}"/>
+
+		<!-- Copy source files to working folder -->
+		<copy todir="${path.source}" overwrite="true">
+			<fileset dir="${path.originalsource}" defaultexcludes="yes">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+				
+		<tstamp/>
+	</target>
+	
+	<target name="dist" depends="-init,-compile,-webservicegenerate,-clean"/>
+
+	<target name="-compile">
+		<echo message="Compiling Java Source"/>
+		
+		<javac srcdir="${path.source}" destdir="${path.temp}" debug="yes">
+			<classpath>
+				<fileset dir="./" includes="*/**"/>
+				<fileset dir="${path.library}" includes="*/**"/>
+				<fileset dir="${path.J2EE}" includes="**/*.jar"/>
+				<!--<fileset dir="${path.ejbjar}" includes="**/*.jar"/>-->
+			</classpath>
+	    	</javac>
+		<copy todir="${path.buildclasses}" overwrite="true">
+			<fileset dir="${path.temp}" defaultexcludes="yes">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="-webservicegenerate" >
+        <taskdef name="wsgen" classname="com.sun.tools.ws.ant.WsGen">
+            <classpath>
+			<fileset dir="${path.library}" includes="*/**"/>
+			<pathelement location="${path.J2EE}/../modules/webservices-osgi.jar"/>
+			<pathelement location="${path.J2EE}/../modules/jaxb-osgi.jar"/>
+		</classpath>
+        </taskdef>
+        <wsgen
+            xendorsed="true"
+		debug="true"
+            keep="true"
+            destdir="${path.buildclasses}"
+            resourcedestdir="${path.buildclasses}/../wsdl/"
+		genwsdl="true"
+		sei="kms.transport.hellotransport.webservice.TransportServiceImpl">
+            <classpath>
+                <pathelement path="${javac.classpath}"/>
+                <pathelement location="${java.home}/../lib/tools.jar"/>
+                <pathelement location="${path.buildclasses}"/>
+            </classpath>
+        </wsgen>
+
+    </target>
+	
+		
+	<target name="-clean">
+		<copy todir="${path.buildclasses}" flatten="false">
+			<fileset dir="${path.temp}" includes="*/**"/>
+		</copy>
+		<copy todir="${path.webinf}/classes" flatten="false">
+			<fileset dir="${path.buildclasses}" includes="*/**"/>
+		</copy>
+		<copy todir="${path.webinf}/wsdl" flatten="false">
+			<fileset dir="${path.buildclasses}/../wsdl" includes="*/**"/>
+		</copy>
+		<copy todir="${path.webinf}/lib" flatten="true">
+			<fileset dir="${path.library}" includes="*.jar"/>
+		</copy>
+		<delete dir="${path.temp}"/>
+		<delete dir="${path.source}"/>
+		<delete dir="${path.binary}"/>
+	</target>
+
+	<target name="-ejb">
+		<ant antfile="${path.ejb}/build/build.xml" target="ejbjar" inheritAll="false"/>
+	</target>
+
+	<target name="war">
+		<delete file="${name.war}"/>
+		<mkdir dir="${path.temp}"/>
+		<mkdir dir="${path.temp}/WEB-INF/"/>
+		<copy todir="${path.temp}/WEB-INF/" overwrite="true">
+			<fileset dir="${path.webinf}"/>
+		</copy>
+		<war destfile="${name.war}" basedir="${path.temp}" needxmlfile="false"/>
+		<delete dir="${path.temp}"/>
+	</target>
+
+	<target name="ear" depends="dist,war">
+		<copy todir="${path.ear}" file="${path.build}/KMS-Transport.war" overwrite="true"/>
+		<copy todir="${path.ear}" file="${path.ejbjar}/KMS-TransportEJB-JAR.jar" overwrite="true"/>
+		<delete file="KMS-Transport.ear"/>
+		<ear destfile="KMS-TransportEAR.ear" basedir="${path.ear}" appxml="${path.ear}/META-INF/application.xml"/>
+	</target>
+
+	<target name="build-all" depends="-params,dist,war">
+		<echo>Built and packaged KMS-Transport</echo>
+	</target>
+
+	<target name="build-all-and-deploy" depends="build-all">
+		<!--<taskdef 
+      		name="sun-appserv-deploy" 
+      		classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask">
+		      <classpath>
+				<pathelement location="${path.J2EE}/../modules/webservices-osgi.jar"/>
+				<pathelement location="${path.J2EE}/../modules/jaxb-osgi.jar"/>
+			</classpath>
+		</taskdef>
+		<sun-appserv-deploy 
+                        file="KMS-Transport.war" 
+                        name="KMS-Transport" 
+                        contextroot="KMS-Transport" 
+                        upload="true" 
+                        force="true" 
+                        verify="true" 
+                        precompilejsp="true" 
+                        asinstalldir="${path.J2EE}/../bin" >                       
+                        <server 
+                                  host="localhost" 
+                                  user="admin"
+                                  passwordfile="masterpassword" /> 
+                </sun-appserv-deploy>-->
+  		<java jar="${path.J2EE}/../modules/admin-cli.jar" fork="true">
+    			<arg line="deploy --force=true KMS-Transport.war"/>
+    		</java>
+		<echo>Deployed KMS-Transport to Glassfish</echo>
+	</target>
+
+	<target name="help">
+<echo>              KMS-Transport
+
+The following build targets are available:
+
+ build-all-and-deploy  on the tin (deploy to glassfish)
+
+ build-all	 compile, generate web service and war
+
+ dist        compile and generate the web service
+
+ war		 wars up the web application
+ 
+ ear		 do the build, ejb, war and package together as an ear
+		 (not currently used)
+</echo>
+	</target>
+</project>

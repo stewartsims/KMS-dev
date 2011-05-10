@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>
+            SWAPP
+        </title>
+        <link rel="stylesheet" type="text/css" media="screen,projection" href="assets/swapp.css" />
+        <style type="text/css">
+        /*<![CDATA[*/
+        li.lst {
+        margin-left: 30px;
+        list-style: disc; 
+        }
+        /*]]>*/
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            <div id="page2">
+                <div id="header">
+                    <div id="logo"><img src="assets/logo.png" alt="SWAPP" /></div>
+                    <form id="login" action="/">
+                        <div>
+                            <input class="text" size="10" id="username" type="text" /><br />
+                            <input class="text" size="10" id="password" type="password" /><br />
+                            <input src="assets/login.gif" alt="Login" class="btn" type="image" />
+                        </div>
+                    </form>
+                </div>
+                <ul id="nav">
+                    <li>
+                        <a href="home.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="documentation.html">Documentation</a>
+                    </li>
+                    <li>
+                        <a href="demo.html">Demo</a>
+                    </li>
+                    <li>
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li>
+                        <strong>Development</strong>
+                    </li>
+                    <li>
+                        <a href="support.html">Support</a>
+                    </li>
+                </ul>
+                <h1>
+                    <img src="assets/banner.jpg" alt="Banner" height="110" width="950" />
+                </h1>
+                <div id="content">
+                    <div id="content-group">
+                        <div id="content-main">
+                            <h2>
+                                Development.&nbsp; 
+                            </h2>
+                            <p id="intro">
+                                SWAPP is an open source project and thus any help you may provide will be appreciated. The current roadmap is laid out below.
+                            </p>
+                            <ul >
+                                <li class="lst">Keep nagging Jan about fixing security :-)</li>
+                                <li class="lst">Refine the structure of the returned JSON (in particular for PUT, POST and DELETE) - DONE</li>
+                                <li class="lst">Implement persistency (borrow from Cliopatria)</li>
+                                <li class="lst">Reimplement thread_call/6</li>
+                                <li class="lst">Figure out how to make use of RDFS</li>
+                                <li class="lst">Reimplement the explorers using a JS lib (?)</li>
+                                <li class="lst">Design and implement a library of utilities to be used by application programmers</li>
+                                <li class="lst">Design and implement a user API</li>
+                                <li class="lst">Design and implement an authentication API</li>
+                                <li class="lst">Design and implement administration tools</li>                                
+                                <li class="lst">Write better API documentation (tables?)</li>
+                                <li class="lst">Write more documentation</li>
+                                <li class="lst">Be more RESTful</li>
+                                <li class="lst">More RESTful event API: http://cometdaily.com/2007/12/27/a-standards-based-approach-to-comet-communication-with-rest/</li>
+                                <li class="lst">Do we need a special term for events?</li>
+                                <li class="lst">Write a tutorial</li>
+                                <li class="lst">Elicit feedback from SWI-Prolog mailing list and comp.lang.prolog</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="content-sub">
+                        <div class="subnav">
+                            <h3>
+                                Administration
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">Users</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">Statistics</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="subnav">
+                            <h3>
+                                API Explorers
+                            </h3>
+                            <ul>
+                                <li>
+                                    <a href="/www/doc/login/index.html">/swapp/login</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/admin/index.html">/swapp/admin/*</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/RDFDB/index.html">/swapp/rdf/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionDB/index.html">/swapp/session/db</a>
+                                </li>
+                                <li>
+                                    <a href="/www/doc/sessionEQ/index.html">/swapp/session/eq</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <hr />
+                    <p>
+                        © Copyright 2009 Torbjörn Lager and Jan Wielemaker
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

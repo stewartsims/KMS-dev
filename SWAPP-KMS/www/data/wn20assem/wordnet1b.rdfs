@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl  "http://www.w3.org/2002/07/owl#">
+    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#">
+    <!ENTITY wn   "http://www.cogsci.princeton.edu/~wn#">
+]>
+<rdf:RDF
+    xmlns     ="&wn;"
+    xml:base  ="http://www.cogsci.princeton.edu/~wn"
+    xmlns:owl ="&owl;"
+    xmlns:rdf ="&rdf;"
+    xmlns:rdfs="&rdfs;"
+    xmlns:wn  ="&wn;"
+>
+
+    <!-- Class definitions -->
+
+    <rdfs:Class rdf:ID="SynSet" rdfs:label="SynSet" />
+
+    <rdfs:Class rdf:ID="Noun" rdfs:label="Noun">
+        <rdfs:subClassOf rdf:resource="#SynSet" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="Verb" rdfs:label="Verb">
+        <rdfs:subClassOf rdf:resource="#SynSet" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="Adjective" rdfs:label="Adjective">
+        <rdfs:subClassOf rdf:resource="#SynSet" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="Adverb" rdfs:label="Adverb">
+        <rdfs:subClassOf rdf:resource="#SynSet" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="AdjectiveSatellite" rdfs:label="AdjectiveSatellite">
+        <rdfs:subClassOf rdf:resource="#Adjective" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="SynSetWord" rdfs:label="SynSetWord" />
+
+    <rdfs:Class rdf:ID="NounWord" rdfs:label="NounWord">
+        <rdfs:subClassOf rdf:resource="#SynSetWord" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="VerbWord" rdfs:label="VerbWord">
+        <rdfs:subClassOf rdf:resource="#SynSetWord" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="AdjectiveWord" rdfs:label="AdjectiveWord">
+        <rdfs:subClassOf rdf:resource="#SynSetWord" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:ID="AdverbWord" rdfs:label="AdverbWord">
+        <rdfs:subClassOf rdf:resource="#SynSetWord" />
+    </rdfs:Class>
+
+    <!-- Properties of SynSet -->
+
+    <rdf:Property rdf:ID="wordForm" rdfs:label="wordForm">
+        <rdfs:domain rdf:resource="#SynSet" />
+        <rdfs:range rdf:resource="&rdfs;Literal" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="g" rdfs:label="glossary entry">
+        <rdfs:domain rdf:resource="#SynSet" />
+        <rdfs:range rdf:resource="&rdfs;Literal" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="hyp" rdfs:label="hyponym of">
+        <rdfs:domain rdf:resource="#SynSet" />
+        <rdfs:range rdf:resource="#SynSet" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="hypernymOf" rdfs:label="hypernymOf">
+        <rdfs:domain rdf:resource="#SynSet" />
+        <rdfs:range rdf:resource="#SynSet" />
+    </rdf:Property>
+
+    <!-- Properties of Verb -->
+
+    <rdf:Property rdf:ID="ent" rdfs:label="entails">
+        <rdfs:domain rdf:resource="#Verb" />
+        <rdfs:range rdf:resource="#Verb" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="cs" rdfs:label="caused by">
+        <rdfs:domain rdf:resource="#Verb" />
+        <rdfs:range rdf:resource="#Verb" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="vgp" rdfs:label="verb group">
+        <rdfs:domain rdf:resource="#Verb" />
+        <rdfs:range rdf:resource="#Verb" />
+    </rdf:Property>
+
+    <!-- Properties of Adjective -->
+
+    <rdf:Property rdf:ID="sim" rdfs:label="similar to">
+        <rdfs:domain rdf:resource="#Adjective" />
+        <rdfs:range rdf:resource="#AdjectiveSatellite" />
+    </rdf:Property>
+
+    <!-- Properties of Noun -->
+
+    <rdf:Property rdf:ID="mm" rdfs:label="member meronym of">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Noun" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="memberHolonymOf" rdfs:label="memberHolonymOf">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Noun" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="ms" rdfs:label="substance meronym of">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Noun" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="substanceHolonymOf" rdfs:label="substanceHolonymOf">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Noun" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="mp" rdfs:label="part meronym of">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Noun" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="partHolonymOf" rdfs:label="partHolonymOf">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Noun" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="at" rdfs:label="attribute">
+        <rdfs:domain rdf:resource="#Noun" />
+        <rdfs:range rdf:resource="#Adjective" />
+    </rdf:Property>
+
+    <!-- Properties of SynSetWord -->
+
+    <rdf:Property rdf:ID="inSynSet" rdfs:label="inSynSet">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="#SynSet" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="relevantWord" rdfs:label="relevantWord">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="&rdfs;Literal" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="der" rdfs:label="derivation">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="#SynSetWord" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="derivedFrom" rdfs:label="derivedFrom">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="#SynSetWord" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="ant" rdfs:label="antonym of">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="#SynSetWord" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="sa" rdfs:label="see also">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="#SynSetWord" />
+    </rdf:Property>
+
+    <rdf:Property rdf:ID="per" rdfs:label="pertains to">
+        <rdfs:domain rdf:resource="#SynSetWord" />
+        <rdfs:range rdf:resource="#SynSetWord" />
+    </rdf:Property>
+
+    <!-- Properties of AdjectiveWord -->
+
+    <rdf:Property rdf:ID="ppl" rdfs:label="particle of">
+        <rdfs:domain rdf:resource="#AdjectiveWord" />
+        <rdfs:range rdf:resource="#VerbWord" />
+    </rdf:Property>
+
+</rdf:RDF>
+

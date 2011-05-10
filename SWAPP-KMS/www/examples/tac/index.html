@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" manifest="OfflineApp.manifest">
+    <head>
+        <title>
+            Haiku
+        </title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.6, width=device-width, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="YES" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="stylesheet" href="main.css" type="text/css" />
+        <link rel="apple-touch-icon-precomposed" href="Images/WebClipIcon.png" />
+        <script type="text/javascript" src="Parts/parts.js" charset="utf-8">
+</script>
+        <script type="text/javascript" src="main.js" charset="utf-8">
+</script>
+    </head>
+    <body onload="load();" class="">
+        <div id="content">
+            <div id="rectangleShape"></div>
+            <div id="tictactoe">
+                Haiku
+            </div>
+            <div id="a1red"></div>
+            <div id="a1black"></div>
+            <div id="a1white" onclick="a1click(event)"></div>
+            <div id="a2red"></div>
+            <div id="a2black"></div>
+            <div id="a2white" onclick="a2click(event)"></div>
+            <div id="a3red"></div>
+            <div id="a3black"></div>
+            <div id="a3white" onclick="a3click(event)"></div>
+            <div id="b1red"></div>
+            <div id="b1black"></div>
+            <div id="b1white" onclick="b1click(event)"></div>
+            <div id="b2red"></div>
+            <div id="b2black"></div>
+            <div id="b2white" onclick="b2click(event)"></div>
+            <div id="b3red"></div>
+            <div id="b3black"></div>
+            <div id="b3white" onclick="b3click(event)"></div>
+            <div id="c1red"></div>
+            <div id="c1black"></div>
+            <div id="c1white" onclick="c1click(event)"></div>
+            <div id="c2red"></div>
+            <div id="c2black"></div>
+            <div id="c2white" onclick="c2click(event)"></div>
+            <div id="c3red"></div>
+            <div id="c3black"></div>
+            <div id="c3white" onclick="c3click(event)"></div>
+            <div id="image">
+                <img src="Images/First%20Move.png" id="inner_image2" />
+            </div>
+            <div id="blackSwitch" onclick="switchFirst(event)">
+                <img src="Images/on%2022.png" id="inner_image" />
+            </div>
+            <div id="blackWins">
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/blackWins.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; visibility: hidden; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/blackWins_clicked.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; text-overflow: ellipsis; margin-left: 10px; margin-right: 10px; line-height: 37px; overflow-x: hidden; overflow-y: hidden;">
+                    <span style="position: static; display: inline;">Black Wins!</span><img style="vertical-align: middle; display: none;" /><br style="display: none;" />
+                </div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"></div>
+            </div>
+            <div id="redWins">
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/redWins.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; visibility: hidden; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/redWins_clicked.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; text-overflow: ellipsis; margin-left: 10px; margin-right: 10px; line-height: 37px; overflow-x: hidden; overflow-y: hidden;">
+                    <span style="position: static; display: inline;">Red Wins!</span><img style="vertical-align: middle; display: none;" /><br style="display: none;" />
+                </div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"></div>
+            </div>
+            <div id="tieGame">
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/tieGame.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; visibility: hidden; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/tieGame_clicked.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; text-overflow: ellipsis; margin-left: 10px; margin-right: 10px; line-height: 37px; overflow-x: hidden; overflow-y: hidden;">
+                    <span style="position: static; display: inline;">Tie</span><img style="vertical-align: middle; display: none;" /><br style="display: none;" />
+                </div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"></div>
+            </div>
+            <div id="restartEarly">
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/restartEarly.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; visibility: hidden; border-top-width: 0px; border-right-width: 8px; border-bottom-width: 0px; border-left-width: 8px; -webkit-border-image: url(Parts/Images/restartEarly_clicked.png) 0 8 0 8 repeat stretch;"></div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; text-overflow: ellipsis; margin-left: 10px; margin-right: 10px; line-height: 37px; overflow-x: hidden; overflow-y: hidden;">
+                    <span style="position: static; display: inline;">Restart</span><img style="vertical-align: middle; display: none;" /><br style="display: none;" />
+                </div>
+                <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"></div>
+            </div>
+            <div id="redSwitch" onclick="switchFirst(event)" style="display: none;">
+                <img src="Images/on33.png" id="inner_image1" />
+            </div>
+            <div id="image1">
+                <img src="Images/arrow-down1.png" id="inner_image3" />
+            </div>
+        </div>
+        <div id="text">
+            Want to play fullscreen? Just add this app to your home screen with the plus button!
+        </div><!-- www.000webhost.com Analytics Code --><script type="text/javascript" src="count.php">
+</script><!-- End Of Code -->
+    </body>
+</html>

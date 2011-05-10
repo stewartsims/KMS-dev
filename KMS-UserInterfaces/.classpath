@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="ejb"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/J2EE"/>
+	<classpathentry kind="lib" path="F:/KME Project Builds/Forks/Open Source/KMS-UserInterfaces/lib/interfaceStubs.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

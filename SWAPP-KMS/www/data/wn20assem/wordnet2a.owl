@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY dc   "http://purl.org/dc/elements/1.1/">
+    <!ENTITY owl  "http://www.w3.org/2002/07/owl#">
+    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#">
+    <!ENTITY wn   "http://www.cogsci.princeton.edu/~wn#">
+]>
+<rdf:RDF
+    xmlns     ="&wn;"
+    xml:base  ="http://www.cogsci.princeton.edu/~wn"
+    xmlns:dc  ="&dc;"
+    xmlns:owl ="&owl;"
+    xmlns:rdf ="&rdf;"
+    xmlns:rdfs="&rdfs;"
+    xmlns:wn  ="&wn;"
+>
+
+    <owl:Ontology rdf:about="">
+        <rdfs:comment>OWL schema for the WordNet 2.0 thesaurus</rdfs:comment>
+        <dc:title>WordNet 2.0</dc:title>
+        <dc:creator>Guus Schreiber</dc:creator>
+        <dc:language>English</dc:language>
+        <dc:publisher>Vrije Universiteit Amsterdam, section Business Informatics</dc:publisher>
+        <dc:description>This schema is the result of a use case in applying a method for converting thesauri to RDF/OWL. This method was developed at the BI section of the Vrije Universiteit Amsterdam.</dc:description>
+        <dc:date>2004-04-29</dc:date>
+    </owl:Ontology>
+
+    <!-- Datatype declarations -->
+
+    <rdfs:Datatype rdf:about="&xsd;nonNegativeInteger" />
+
+    <!-- Properties of SynSet -->
+
+    <rdf:Description rdf:about="#wordForm">
+        <rdfs:subPropertyOf rdf:resource="&rdfs;label" />
+    </rdf:Description>
+
+    <rdf:Description rdf:about="#g">
+        <rdfs:subPropertyOf rdf:resource="&rdfs;comment" />
+    </rdf:Description>
+
+    <!-- Properties of SynSetWord -->
+
+    <rdf:Description rdf:about="#relevantWord">
+        <rdfs:subPropertyOf rdf:resource="&rdfs;label" />
+    </rdf:Description>
+
+    <!-- OWL statements -->
+
+    <owl:Class rdf:about="#Noun">
+        <owl:disjointWith rdf:resource="#Verb" />
+        <owl:disjointWith rdf:resource="#Adjective" />
+        <owl:disjointWith rdf:resource="#Adverb" />
+    </owl:Class>
+
+    <owl:Class rdf:about="#Verb">
+        <owl:disjointWith rdf:resource="#Adjective" />
+        <owl:disjointWith rdf:resource="#Adverb" />
+    </owl:Class>
+
+    <owl:Class rdf:about="#Adjective">
+        <owl:disjointWith rdf:resource="#Adverb" />
+    </owl:Class>
+
+    <owl:Class rdf:about="#SynSet">
+        <owl:unionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#Noun" />
+            <owl:Class rdf:about="#Verb" />
+            <owl:Class rdf:about="#Adjective" />
+            <owl:Class rdf:about="#Adverb" />
+        </owl:unionOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#NounWord">
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#SynSetWord" />
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#inSynSet" />
+                <owl:allValuesFrom rdf:resource="#Noun" />
+            </owl:Restriction>
+        </owl:intersectionOf>
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#sa" />
+                <owl:allValuesFrom rdf:resource="#NounWord" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#VerbWord">
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#SynSetWord" />
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#inSynSet" />
+                <owl:allValuesFrom rdf:resource="#Verb" />
+            </owl:Restriction>
+        </owl:intersectionOf>
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#sa" />
+                <owl:allValuesFrom rdf:resource="#VerbWord" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#AdjectiveWord">
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#SynSetWord" />
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#inSynSet" />
+                <owl:allValuesFrom rdf:resource="#Adjective" />
+            </owl:Restriction>
+        </owl:intersectionOf>
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#sa" />
+                <owl:allValuesFrom rdf:resource="#AdjectiveWord" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#AdverbWord">
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Class rdf:about="#SynSetWord" />
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#inSynSet" />
+                <owl:allValuesFrom rdf:resource="#Adverb" />
+            </owl:Restriction>
+        </owl:intersectionOf>
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#sa" />
+                <owl:allValuesFrom rdf:resource="#AdverbWord" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:DatatypeProperty rdf:about="#wordForm" />
+
+    <owl:DatatypeProperty rdf:about="#g" />
+
+    <owl:TransitiveProperty rdf:about="#hyp" />
+
+    <owl:Class rdf:about="#Noun">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hyp" />
+                <owl:allValuesFrom rdf:resource="#Noun" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Verb">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hyp" />
+                <owl:allValuesFrom rdf:resource="#Verb" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Adjective">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hyp" />
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:cardinality>
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#Adverb">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hyp" />
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:cardinality>
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:TransitiveProperty rdf:about="#hypernymOf">
+        <owl:inverseOf rdf:resource="#hyp" />
+    </owl:TransitiveProperty>
+
+    <owl:ObjectProperty rdf:about="#ent" />
+
+    <owl:ObjectProperty rdf:about="#cs" />
+
+    <owl:SymmetricProperty rdf:about="#vgp" />
+
+    <owl:ObjectProperty rdf:about="#sim" />
+
+    <owl:ObjectProperty rdf:about="#mm" />
+
+    <owl:ObjectProperty rdf:about="#memberHolonymOf">
+        <owl:inverseOf rdf:resource="#mm" />
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#ms" />
+
+    <owl:ObjectProperty rdf:about="#substanceHolonymOf">
+        <owl:inverseOf rdf:resource="#ms" />
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#mp" />
+
+    <owl:ObjectProperty rdf:about="#partHolonymOf">
+        <owl:inverseOf rdf:resource="#mp" />
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="#at" />
+
+    <owl:ObjectProperty rdf:about="#inSynSet" />
+
+    <owl:DatatypeProperty rdf:about="#relevantWord" />
+
+    <owl:ObjectProperty rdf:about="#der" />
+
+    <owl:SymmetricProperty rdf:about="#ant" />
+
+    <owl:ObjectProperty rdf:about="#sa" />
+
+    <owl:ObjectProperty rdf:about="#per" />
+
+    <owl:Class rdf:about="#AdjectiveWord">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#per" />
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Class rdf:about="#NounWord" />
+                            <owl:Class rdf:about="#AdjectiveWord" />
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#AdverbWord">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#per" />
+                <owl:allValuesFrom rdf:resource="#AdjectiveWord" />
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#NounWord">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#per" />
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:cardinality>
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="#VerbWord">
+        <owl:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#per" />
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:cardinality>
+            </owl:Restriction>
+        </owl:subClassOf>
+    </owl:Class>
+
+    <owl:ObjectProperty rdf:about="#ppl" />
+
+</rdf:RDF>
+

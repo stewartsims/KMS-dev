@@ -1,0 +1,39 @@
+/* GUI */
+
+.panel {
+   background: #91B4D7 url("kandinsky.jpg") repeat 0 0;
+   background-color: #F3E9BB;
+   background-color: #CCC;
+   background-color: #E8F2FF;
+   background-color: #F9F9F9;
+   background-color: #F3E9BB;
+   background-color: #F3F3F3;
+   }
+   
+.button, .helpbutton {
+   font-size: 80%;
+   }
+
+.button:disabled {
+   color: gray;
+   }
+      
+.menu {
+   border-color:rgb(200,200,200);
+   }
+   
+.frame {
+   background-color: #F9F9F9;
+   background-color: #CCC;
+   }   
+   
+
+/* Help page */
+
+h2 {
+   background-color:darkblue
+   }
+   
+h3 {
+   background-color:darkblue
+   }

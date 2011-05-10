@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://localhost:8080/" xmlns:tns="http://localhost:8080/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="transport" type="tns:transport"/>
+
+  <xs:element name="transportResponse" type="tns:transportResponse"/>
+
+  <xs:complexType name="transport">
+    <xs:sequence>
+      <xs:element name="queryPayload" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="transportResponse">
+    <xs:sequence>
+      <xs:element name="dataObject" type="xs:anyType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

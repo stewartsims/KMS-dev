@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="KMS-Transport EJB JAR" default="help" basedir=".">
+	<target name="-init">
+		<!-- Path locations -->
+		<property name="path.ejbtemp" value="../temp"/>
+		<property name="path.ejbsource" value="../kms"/>
+		<property name="path.J2EE" value="C:/Applications/Programming/J2EE SDK/glassfish/lib"/>
+		<property name="path.metainf" value="../META-INF"/>
+		
+		<!-- Delete working folders -->
+		<delete dir="${path.ejbtemp}"/>
+
+		<!-- Create empty working folders -->
+		<mkdir dir="${path.ejbtemp}"/>
+		<mkdir dir="${path.ejbtemp}/META-INF"/>
+		<copy todir="${path.ejbtemp}/META-INF">
+			<fileset dir="${path.metainf}">
+				<include name="*.xml"/>
+			</fileset>
+		</copy>
+		<tstamp/>
+	</target>
+	
+	<target name="-compile" depends="-init">
+		<javac srcdir="${path.ejbsource}" destdir="${path.ejbtemp}">
+			<classpath>
+				<path>
+					<fileset dir="${path.J2EE}" includes="**/*.jar"/>
+				</path>
+			</classpath>
+		</javac>
+	</target>	
+	
+	<target name="ejbjar" depends="-compile">
+		<delete file="KMS-SettingsEJB-JAR.jar"/>
+		<jar destfile="KMS-SettingsEJB-JAR.jar" basedir="${path.ejbtemp}"/>
+		<delete dir="${path.ejbtemp}"/>
+	</target>
+
+	<target name="help">
+		<echo>             EJB JAR
+		The following build targets are available:
+
+ 		ejbjar      compile and make ejbjar
+		</echo>
+	</target>
+</project>
+

@@ -1,0 +1,139 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>
+   SWAPP Admin API Explorer
+  </title>
+  <script type="text/javascript" language="JavaScript"> 
+    if (top.frames.length==0) {top.location="index.html";}
+  </script>
+
+  <link type="text/css" rel="stylesheet" href="../css/user_interface.css">
+  <link type="text/css" rel="stylesheet" href="../css/blueish.css" title="Blueish">
+
+  <script type="text/javascript" src="../js/yui/yahoo-min.js"></script> 
+  <script type="text/javascript" src="../js/yui/event-min.js"></script>
+  <script type="text/javascript" src="../js/yui/connection_core-min.js"></script>
+  <script type="text/javascript" src="../js/yui/json-min.js"></script> 
+  <script type="text/javascript" src="../js/jsonbrowser.js"></script> 
+  <script type="text/javascript" src="../js/utils.js"></script> 
+
+  <script type="text/javascript"> 
+    function login() {
+        switchPageIfNeeded();
+        var username = document.getElementById("login-post-auth-username").value;
+        var password = document.getElementById("login-post-password").value;
+        paste('Click on a JSON property to display a path here...', 'gray');
+        YAHOO.util.Connect.initHeader('Authorization','Basic ' + encode64(username + ":" + password));
+        YAHOO.util.Connect.asyncRequest("POST", "/swapp/login", {
+            success: function(o) {
+                        var response = YAHOO.lang.JSON.parse(o.responseText);
+                        var html = display(response, "response");
+                        parent.display.document.getElementById("data").innerHTML = html;
+                     }
+            },"");
+    }
+    function logout() {
+        switchPageIfNeeded();
+        paste('Click on a JSON property to display a path here...', 'gray');
+        YAHOO.util.Connect.asyncRequest("DELETE", "/swapp/login", {
+            success: function(o) {
+                        var response = YAHOO.lang.JSON.parse(o.responseText);
+                        var html = display(response, "response");
+                        parent.display.document.getElementById("data").innerHTML = html;
+                     }
+            },"");
+    }
+  </script>
+    
+  <style type="text/css">
+     input {
+         font-family: monospace;
+     }
+     table.c7 {width:100%;}
+     p.c1 {
+         font-weight: bold;
+         color: #18159D;
+         font-family: verdana;
+         font-size: 12px;
+         margin-top: 15px;
+     }
+     .url {
+         padding-bottom: 5px;
+         font-family: monospace;
+         font-size: 12px;
+     }
+  </style>
+ </head>
+ <body class="panel">
+   <table class="c7">
+    <tr>
+     <td>
+       <a href="/swapp" target="_top"><img style="border:0; float:left;" src="../img/api_explorer.png"></a>
+       <span style="font-family:verdana;font-weight:bold;font-size:10px;float:right;">
+        Login |
+        <a href="/www/doc/admin/index.html" target="_top">Admin</a> |
+        <a href="/www/doc/RDFDB/index.html" target="_top">RDFDB</a> |
+        <a href="/www/doc/sessionDB/index.html" target="_top">SessionDB</a> |
+        <a href="/www/doc/sessionEQ/index.html" target="_top">SessionEQ</a> |
+        <a href="../help.html" target="display">Help</a>
+       </span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom" align="center">
+      <span style="font-family:monospace;font-size:20px;">/swapp/login</span>
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       LOGIN
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="get" name="get" type="button" onclick="login();" class="button" value="POST"> /swapp/login
+       <input style="float:right;" type="button" onclick="clearFields(['login-post-auth-username','login-post-password']);" class="button" value="Clear"> 
+       <div style="padding:2px;; margin-top:3px;">
+        Authorization: <input style="padding:0;width:7em;" id="login-post-auth-username" name="login-post-auth-username" type="text" size="10" spellcheck="false" value=""><b>:</b><input style="padding:0;width:7em;" id="login-post-password" name="login-post-password" type="password" size="10" spellcheck="false" value="">
+       </div>
+      </span> 
+     </td>
+    </tr>
+    <tr>
+     <td>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      <span class="url">
+       <input id="get" name="get" type="button" onclick="logout();" class="button" value="DELETE"> /swapp/login
+      </span> 
+     </td>
+    </tr>
+    <tr>
+     <td valign="bottom">
+      <p class="c1">
+       PRESENTATION
+      </p>
+     </td>
+    </tr>
+    <tr>
+     <td class="frame">
+      Show as
+      <select name="presentation" class="menu">
+       <option value="HTML" selected>
+        HTML
+       </option>
+      </select>
+      &nbsp;&nbsp;&nbsp;Truncate long strings
+      <input type="checkbox" id="jsonTrunc" name="jsonTrunc">  
+      </td>
+    </tr>
+   </table>
+ </body>
+</html>
+

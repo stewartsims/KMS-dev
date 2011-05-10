@@ -1,0 +1,60 @@
+/* 
+**
+** Stylesheet for XXX Web Laboratory
+** 
+** Author: Torbjörn Lager  
+**         lager@ling.gu.se
+*/
+
+/* 
+** User interface 
+**
+*/
+
+th, td {
+    font-size: 90%;
+}
+.panel, .frame, .button, .helpbutton {
+   color:black;
+   font-size: 12px;
+   }
+.frame, .grammar {
+   padding: 0.3em;
+   border: solid 1px black;
+   }
+.grammar, .string {
+   padding: 4px 4px 4px 4px;
+   font-family: monospace;
+   font-size: 12px;
+   width: 100%;
+   margin-top: 0px;
+   }
+.grammar {
+   padding-top: 0.5em;
+   height: 100%;
+   overflow: auto;
+   }
+.heading {
+   font-family: verdana, arial, sans-serif;
+   font-size: 100%;
+   font-weight: bold;
+   }
+.text {
+   font-family: verdana, arial, sans-serif;
+   }
+.button, .helpbutton {
+   font-family: verdana, arial, sans-serif;
+   font-size: 12px;
+/*   width: 7em;*/
+   }
+.field, .menu {
+   font-family: monospace;
+   margin-bottom: 5px;
+   }
+.string {
+   border: inset thin;
+   margin-top: 5px;
+   margin-bottom: 5px;
+   }
+
+

@@ -1,0 +1,63 @@
+body 
+{margin:0;font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;background:#fff;color:#000;overflow:hidden;-webkit-text-size-adjust:none;}
+body > h1 
+{-webkit-box-sizing: border-box;margin:0;padding:10px;line-height:20px; font-size:11px;font-weight:bold;text-align:center;text-shadow:rgba(0, 0, 0, 0.6) 0px -1px 0;text-overflow:ellipsis;color:#fff;background:url(../images/iPhoneToolbar.png) #6d84a2 repeat-x;border-bottom:1px solid #2d3642;text-shadow:1px 1px 1px #000;}
+body > h1 sup {font-size:130%;vertical-align:top;}
+body > h1 sup b {font-size:70%;vertical-align:top;}  
+font {font-size:14px;}
+.paddingBottom10 {padding-bottom:10px;}
+.button 
+{position:absolute;top:8px;right:6px;-webkit-border-image:url(../images/iPhoneButton.png) 0 5 0 5;-webkit-border-radius:0;border-width:0 5px 0 5px;padding:0;height:28px;line-height:28px;font-size:12px;font-weight:bold;color:#fff;text-shadow:rgba(0, 0, 0, 0.6) 0px -1px 0;text-decoration:none;background:none;}
+#backButton {left:6px;right:auto;-webkit-border-image:url(../images/iPhoneBackButton.png) 0 8 0 14;border-width:0 8px 0 14px;}
+
+/*body > div,*/
+body > form, body > ul 
+{display:none;position:absolute;left:0;top:41px;width:100%;min-height:418px;margin:0;padding:0;list-style:none;background-color:#fff;color:#1364a1;}
+body > *[selected="true"] {display:block;}
+body > ul > li 
+{margin:0;border-bottom:1px solid #7db9cd;padding:0;background:url(../images/buttonRight.gif) no-repeat right center;font-size:20px;font-weight:bold;list-style:none;text-overflow:ellipsis;}
+body > ul > li > a {display:block;padding:8px 32px 8px 8px;text-decoration:none;color:inherit;}
+body > ul > li > a:active 
+{display:block;padding:8px 32px 8px 8px;text-decoration:none;color:#fff;font-weight:bold;list-style:none;background:#1364a1 url(../images/buttonRightActive.gif) no-repeat right center;border-bottom:1px solid #7db9cd;}
+body > ul > li > a sup {font-size:100%;vertical-align:top;}
+body > ul > li > a sup b {font-size:70%;vertical-align:top;} 
+ 
+ /* header footer */
+#header {height:55px;width:100%;background:#e7eef3 url(../images/header.jpg) 0 0 repeat-x;border-bottom:1px solid #7db9cd;}
+#headerLogo {height:45px;width:132px;margin-left:28%;padding-top:5px;}
+#headerPhrase {height:107px;width:14px;margin:-9px 0 9px 65%;}
+#footer {height:30px;width:100%;background:#e7eef3 url(../images/footer.jpg) 0 0 repeat-x;}
+#footer IMG{margin-left:37%;padding-top:1px;}
+
+/* Menu */
+#contentp {-webkit-box-sizing: border-box; display: block;clear: both;}
+.contentClear {clear:both;padding:0 5px 0 5px;}
+.border {background:#304d8f url(../images/headerRepeat.jpg) 0 0 repeat-x;-webkit-border-radius:5px;border:1px solid #000;padding:10px;margin-top:10px;}
+.borderContainer {background:#fff;border-bottom:1px solid #000;margin:0 -10px 10px -10px;padding:5px 0 20px;}
+.footer {background:#304d8f url(../images/headerRepeat.jpg) 0 0 repeat-x;height:22px;width:100%;margin:-10px -10px -10px -10px;padding-right:20px;}
+h1 {font-size:18px;color:#fff;margin:-5px -10px 0 -10px;border-bottom:1px solid #000;padding-bottom:3px;text-shadow:1px 1px 1px #000;}
+h1 div {padding-left:10px;}
+h1 sup {font-size:100%;vertical-align:top;}
+h1 sup b {font-size:70%;vertical-align:top;} 
+h1 div i {font-size:14px;} 
+h2 {font-size:16px;color:#304d8f;margin:10px 0 0px 10px;}
+h2 i {font-size:10px;}
+h2 sup {font-size:100%;vertical-align:top;}
+h2 sup b {font-size:70%;vertical-align:top;} 
+h2 sup i {vertical-align:bottom;} 
+.chart th {color:#666;text-align:center;font-size:12px;font-weight:normal;padding:3px 0 2px;}
+.chart td {text-align:center;font-size:14px;font-wieght:bold;padding:1px 0 1px;}
+hr {background:#304d8f;width:100%;margin:15px 0 15px;}
+#copy {height:20px;width:100%;text-align:center;padding-top:5px;}
+#copy a:link, #copy a:visited{ font-size:11px;color:#666;text-decoration:none;}
+#copy a:hover, #copy a:active {font-size:11px;color:#666;text-decoration:underline;}
+	
+
+	
+	
+	
+	
+	
+	
+
+
